@@ -15,11 +15,8 @@ ActiveRecord::Base.logger.level = Logger::WARN
 ActiveRecord::Base.configurations = {'sqlite3' => {:adapter => 'sqlite3', :database => ':memory:'}}
 ActiveRecord::Base.establish_connection('sqlite3')
 
+#Define schema
 require File.join(File.dirname(__FILE__), 'schema')
-
-
-require 'has_machine_tags/tag'
-require 'has_machine_tags/tagging'
 class TaggableModel < ActiveRecord::Base
   has_machine_tags
 end

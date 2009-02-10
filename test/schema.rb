@@ -5,8 +5,8 @@ ActiveRecord::Schema.define(:version => 0) do
 
   create_table :tags do |t|
     t.string :name
-    t.string :object
-    t.string :property
+    t.string :namespace
+    t.string :predicate
     t.string :value
   end
 

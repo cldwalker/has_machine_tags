@@ -10,7 +10,7 @@ class Tag < ActiveRecord::Base
   
   def update_name_related_columns
     if self.changed.include?('name') && (arr = extract_from_name(self.name))
-      self[:object], self[:property], self[:value] = arr
+      self[:namespace], self[:predicate], self[:value] = arr
     end
   end
 end

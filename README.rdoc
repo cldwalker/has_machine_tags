@@ -1,0 +1,12 @@
+== Description
+
+This plugin implements Flickr's machine tags as explained
+here[http://www.flickr.com/groups/api/discuss/72157594497877875] .
+
+This is an experiment in progress so api's are subject to change as I explore machine tags
+and their effectiveness.
+
+== Todo
+
+* Add same/similar finder methods that flickr offers for traversing it's namespaces.
+* Add support for DataMapper to be more ORM-agnostic

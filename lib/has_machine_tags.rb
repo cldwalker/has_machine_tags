@@ -1,21 +1,8 @@
 current_dir = File.dirname(__FILE__)
 $:.unshift(current_dir) unless $:.include?(current_dir) || $:.include?(File.expand_path(current_dir))
+require 'has_machine_tags/tag_list'
 
 module HasMachineTags
-  class TagList < Array
-    cattr_accessor :delimiter
-    self.delimiter = ','
-    
-    def initialize(string_or_array)
-      array = string_or_array.is_a?(Array) ? string_or_array : string_or_array.split(/\s*#{delimiter}\s*/)
-      concat array
-    end
-    
-    def to_s
-      join("#{delimiter} ")
-    end
-  end
-  
   module ActiveRecord
     def self.included(base)
       base.extend(ClassMethods)

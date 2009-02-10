@@ -11,12 +11,59 @@ module HasMachineTags
     module ClassMethods
       def has_machine_tags(*args)
         self.class_eval do
-          include HasMachineTags::ActiveRecord::InstanceMethods
-          
           has_many :taggings, :as=>:taggable, :dependent=>:destroy
           has_many :tags, :through=>:taggings
           after_save :save_tags
+          
+          include HasMachineTags::ActiveRecord::InstanceMethods
+          extend HasMachineTags::ActiveRecord::SingletonMethods
+          if respond_to?(:named_scope)
+            named_scope :tagged_with, lambda{ |tags, options|
+              find_options_for_find_tagged_with(tags, options)
+            }            
+          end
         end
+      end
+    end
+    
+    module SingletonMethods
+      # Pass either a tag string, or an array of strings or tags
+      # 
+      # Options:
+      #   :exclude - Find models that are not tagged with the given tags
+      #   :match_all - Find models that match all of the given tags, not just one
+      #   :conditions - A piece of SQL conditions to add to the query
+      def find_tagged_with(*args)
+        options = find_options_for_find_tagged_with(*args)
+        options.blank? ? [] : find(:all,options)
+      end
+      
+      def find_options_for_find_tagged_with(tags, options = {})
+        tags = TagList.new(tags)
+        return {} if tags.empty?
+
+        conditions = []
+        conditions << sanitize_sql(options.delete(:conditions)) if options[:conditions]
+        
+        taggings_alias, tags_alias = "#{table_name}_taggings", "#{table_name}_tags"
+        
+        if options.delete(:exclude)
+          tags_conditions = tags.map { |t| sanitize_sql(["#{Tag.table_name}.name = ?", t]) }.join(" OR ")
+          conditions << sanitize_sql(["#{table_name}.id NOT IN (SELECT #{Tagging.table_name}.taggable_id FROM #{Tagging.table_name} LEFT OUTER JOIN #{Tag.table_name} ON #{Tagging.table_name}.tag_id = #{Tag.table_name}.id WHERE (#{tags_conditions}) AND #{Tagging.table_name}.taggable_type = #{quote_value(base_class.name)})", tags])
+        else
+          conditions << tags.map { |t| sanitize_sql(["#{tags_alias}.name = ?", t]) }.join(" OR ")
+
+          if options.delete(:match_all)
+            group = "#{taggings_alias}.taggable_id HAVING COUNT(#{taggings_alias}.taggable_id) = #{tags.size}"
+          end
+        end
+        
+        { :select => "DISTINCT #{table_name}.*",
+          :joins => "LEFT OUTER JOIN #{Tagging.table_name} #{taggings_alias} ON #{taggings_alias}.taggable_id = #{table_name}.#{primary_key} AND #{taggings_alias}.taggable_type = #{quote_value(base_class.name)} " +
+                    "LEFT OUTER JOIN #{Tag.table_name} #{tags_alias} ON #{tags_alias}.id = #{taggings_alias}.tag_id",
+          :conditions => conditions.join(" AND "),
+          :group      => group
+        }.update(options)
       end
     end
     

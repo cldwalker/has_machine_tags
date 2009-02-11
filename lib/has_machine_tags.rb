@@ -20,7 +20,7 @@ module HasMachineTags
           if respond_to?(:named_scope)
             named_scope :tagged_with, lambda{ |tags, options|
               find_options_for_find_tagged_with(tags, options)
-            }            
+            }
           end
         end
       end
@@ -39,6 +39,7 @@ module HasMachineTags
       end
       
       def find_options_for_find_tagged_with(tags, options = {})
+        options.reverse_merge!(:match_all=>true)
         tags = TagList.new(tags)
         return {} if tags.empty?
 
@@ -53,10 +54,9 @@ module HasMachineTags
         else
           conditions << tags.map {|t|
             if match = Tag.match_wildcard_machine_tag(t)
-              match.map {|k,v| 
+              match.map {|k,v|
                 sanitize_sql(["#{tags_alias}.#{k} = ?", v])
               }.join(" AND ")
-              # sanitize_sql(["#{tags_alias}.namespace = ?", $1])
             else
               sanitize_sql(["#{tags_alias}.name = ?", t])
             end

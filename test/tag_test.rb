@@ -12,7 +12,7 @@ class HasMachineTags::TagTest < Test::Unit::TestCase
   end
   
   context "update" do
-    before(:each) { @obj = Tag.create(:name=>'blah2') }
+    before(:each) { @obj = Tag.new }
     
     test "with normal tag name only touches name" do
       @obj.update_attributes :name=> 'bling'
@@ -25,6 +25,7 @@ class HasMachineTags::TagTest < Test::Unit::TestCase
     end
 
     test "with no name sets no name fields" do
+      @obj.update_attributes :name=>'blah2'
       @obj.update_attributes :predicate=>'changed'
       @obj.name.should == 'blah2'
     end
@@ -73,6 +74,20 @@ class HasMachineTags::TagTest < Test::Unit::TestCase
     
     test "doesn't match normal tag" do
       Tag.match_wildcard_machine_tag('name').should == nil
+    end
+  end
+  
+  test "validates name when no invalid characters" do
+    Tag.new(:name=>'valid!name_really?').valid?.should be(true)
+  end
+
+  test "validates name when machine tag format" do
+    Tag.new(:name=>'name:pred=value').valid?.should be(true)
+  end
+
+  test "invalidates name when invalid characters present" do
+    %w{some.tag another:tag so=invalid yet,another whoop*}.each do |e|
+      Tag.new(:name=>e).valid?.should be(false)
     end
   end
 end

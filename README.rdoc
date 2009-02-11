@@ -3,10 +3,102 @@
 This plugin implements Flickr's machine tags as explained
 here[http://www.flickr.com/groups/api/discuss/72157594497877875] .
 
-This is an experiment in progress so api's are subject to change as I explore machine tags
-and their effectiveness.
+Basically, a tag can have a namespace, a predicate and a value in the format
+`[namespace]:[predicate]=[value]` . This allows for more precise tagging as
+tagged items can be queried by a namespace, predicate, value or any combination of them.
+I think of machine tags as object tags, mapping namespace and predicate to class and attribute
+of an object.
+
+This is an experiment in progress so api's are subject to change.
+
+== Install
+
+Install as a gem
+
+    bash> gem install cldwalker-has_machine_tags -s http://gems.github.com
+
+Or as a plugin
+
+    bash> script/plugin install git://github.com/cldwalker/has_machine_tags.git
+
+Migrate your database from Rails root:
+  
+    bash> script/generate has_machine_tags_migration
+    bash> rake db:migrate
+
+== Usage
+
+Have your Url model use has_machine tags
+
+  class Url < ActiveRecord::Base
+    has_machine_tags
+  end
+
+Let's create some urls with machine tags!
+
+    url = Url.create(:name=>"http://github.com/cldwalker/has_machine_tags",
+      :tag_list=>'gem:type=tagging,flickr')
+
+    url2 = Url.create(:name=>"http://github.com/giraffesoft/is_taggable",
+      :tag_list=>'gem:type=tagging, gem:user=giraffesoft')
+
+    url.tag_list # => ["gem:type=tagging", "flickr"]
+    
+    url.tags # => [<Tag name:"gem:type=tagging">, <Tag name:"flickr">]
+
+Let's query them
+
+    # query urls tagged with tags that have tagging as a value 
+    # my shorthand
+    Url.tagged_with '=tagging'  # => [url, url2] from above
+    # the flickr way
+    Url.tagged_with '*:*=tagging'  # => [url, url2] from above
+
+    # query urls tagged with tags that have a gem with a user
+    # my shorthand
+    Url.tagged_with 'gem:user'  # => [url2] from above
+    # the flickr way
+    Url.tagged_with 'gem:user=*'  # => [url2] from above
+
+    #Non-machine tags work of course
+    Url.tagged_with 'flickr'  # => [url] from above
+
+    #tagged_with() is a named_scope so do your chaining as needed
+    Url.tagged_with('flickr').created(2.days.ago).yet_another_finder(:sweet)
+
+You can manipulate a tag list just like you would an array with the benefit
+that a comma delimited string is converted to an array.
+
+    # Set tag_list explicitly
+    url.tag_list = "comma, delimited"
+    url.save
+    url.tag_list # =>['comma', 'delimited']
+
+    url.tag_list = ['or', 'an', 'array']
+    url.save
+    url.tag_list # =>['or', 'an' 'array']
+
+    #Add a tag
+    url.tag_list << 'another_tag' 
+    url.save
+    url.tag_list # => ["gem:type=tagging", "flickr", "another_tag']
+
+    #Delete a tag
+    url.tag_list.delete('another_tag')
+    url.save
+    url.tag_list # => ["gem:type=tagging", "flickr"]
+
+
+== Limitations
 
 == Todo
 
-* Add same/similar finder methods that flickr offers for traversing it's namespaces.
+* Console methods/visualizations for showing relations between namespaces, predicates + values
 * Add support for DataMapper to be more ORM-agnostic
+* Play friendly with other tagging plugins as needed.
+
+== Credits
+
+  Thanks goes to the {acts-as-taggable-on plugin}[http://github.com/mbleigh/acts-as-taggable-on/tree/master]
+  for their finder code and the {is_taggable plugin}[http://github.com/giraffesoft/is_taggable/tree/master]
+  for demonstrating sane testing for a Rails plugin.

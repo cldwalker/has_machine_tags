@@ -51,7 +51,16 @@ module HasMachineTags
           tags_conditions = tags.map { |t| sanitize_sql(["#{Tag.table_name}.name = ?", t]) }.join(" OR ")
           conditions << sanitize_sql(["#{table_name}.id NOT IN (SELECT #{Tagging.table_name}.taggable_id FROM #{Tagging.table_name} LEFT OUTER JOIN #{Tag.table_name} ON #{Tagging.table_name}.tag_id = #{Tag.table_name}.id WHERE (#{tags_conditions}) AND #{Tagging.table_name}.taggable_type = #{quote_value(base_class.name)})", tags])
         else
-          conditions << tags.map { |t| sanitize_sql(["#{tags_alias}.name = ?", t]) }.join(" OR ")
+          conditions << tags.map {|t|
+            if match = Tag.match_wildcard_machine_tag(t)
+              match.map {|k,v| 
+                sanitize_sql(["#{tags_alias}.#{k} = ?", v])
+              }.join(" AND ")
+              # sanitize_sql(["#{tags_alias}.namespace = ?", $1])
+            else
+              sanitize_sql(["#{tags_alias}.name = ?", t])
+            end
+          }.join(" OR ")
 
           if options.delete(:match_all)
             group = "#{taggings_alias}.taggable_id HAVING COUNT(#{taggings_alias}.taggable_id) = #{tags.size}"

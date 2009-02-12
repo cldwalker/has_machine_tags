@@ -30,7 +30,7 @@ Migrate your database from Rails root:
 
 == Usage
 
-Setup a model use has_machine_tags
+Setup a model to use has_machine_tags
 
   class Url < ActiveRecord::Base
     has_machine_tags
@@ -43,6 +43,9 @@ Let's create some urls with machine tags!
 
     url2 = Url.create(:name=>"http://github.com/giraffesoft/is_taggable",
       :tag_list=>'gem:type=tagging, gem:user=giraffesoft')
+
+    url3 = Url.create(:name=>"http://github.com/datamapper/data_mapper/tree/master",
+      :tag_list=>'gem:type=orm')
 
     url.tag_list # => ["gem:type=tagging", "flickr"]
     
@@ -60,10 +63,11 @@ Let's query them:
     Url.tagged_with('flickr').yet_another_finder(:sweet).paginate(:per_page=>30)
 
 Nothing interesting so far. We could've done the same with normal tagging.
-But what happens when we start with wildcard machine syntax.
+
+But when we start with wildcard machine tag syntax, machine tags become more valuable:
 
     # Query urls tagged as gems (namespace = 'gem')
-    Url.tagged_with 'gem:'  # => [url, url2] from above
+    Url.tagged_with 'gem:'  # => [url, url2, url3] from above
 
     # Query urls tagged as having a user, regardless of namespace and value (predicate = 'user')
     Url.tagged_with 'user='  # => [url2] from above
@@ -74,15 +78,17 @@ But what happens when we start with wildcard machine syntax.
     # Query urls tagged as having a tagging value, regardless of namespace and predicate (value = 'tagging')
     Url.tagged_with '=tagging'  # => [url, url2] from above
 
-See Tag for more details on machine tag syntax.
+More details on machine tag syntax can be found in the Tag class.
 
-The same machine tag syntax can be used to fetch tags:
+=== More Usage
+
+The wildcard machine tag syntax can also be used to fetch tags:
 
     # Tags that are gems
     Tag.machine_tags 'gem:' # => [<Tag name:"gem:type=tagging">, <Tag name:"gem:user=giraffesoft">]
 
-    # Tags that have a user predicate # => [<Tag name:"gem:user=giraffesoft">]
-    Tag.machine_tags 'user='
+    # Tags that have a user predicate
+    Tag.machine_tags 'user=' # => [<Tag name:"gem:user=giraffesoft">]
 
 Of course you can do the standard tag_list manipulation:
 
@@ -114,6 +120,7 @@ these characters are off limit unless used in the machine tag context:
 
 == Todo
 
+* More tests!
 * Console methods for showing relations between namespaces, predicates + values
 * Add support for DataMapper to be more ORM-agnostic
 * Play friendly with other tagging plugins as needed.

@@ -27,7 +27,8 @@ module HasMachineTags
   
   module SingletonMethods
     # Takes a string of delimited tags or an array of tags
-    # Note that each tag is interpreted as a possible machine tag
+    # Note that each tag is interpreted as a possible wildcard machine tag.
+    # Also note that the below options apply to tagged_with().
     # 
     # Options:
     #   :exclude - Find models that are not tagged with the given tags
@@ -54,9 +55,10 @@ module HasMachineTags
       else
         conditions << tags.map {|t|
           if match = Tag.match_wildcard_machine_tag(t)
-            match.map {|k,v|
+            string = match.map {|k,v|
               sanitize_sql(["#{tags_alias}.#{k} = ?", v])
             }.join(" AND ")
+            "( #{string} )"
           else
             sanitize_sql(["#{tags_alias}.name = ?", t])
           end

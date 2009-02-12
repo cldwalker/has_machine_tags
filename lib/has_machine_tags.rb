@@ -26,11 +26,12 @@ module HasMachineTags
   end
   
   module SingletonMethods
-    # Pass either a tag string, or an array of strings or tags
+    # Takes a string of delimited tags or an array of tags
+    # Note that each tag is interpreted as a possible machine tag
     # 
     # Options:
     #   :exclude - Find models that are not tagged with the given tags
-    #   :match_all - Find models that match all of the given tags, not just one
+    #   :match_all - Find models that match all of the given tags, not just one, default: true
     #   :conditions - A piece of SQL conditions to add to the query
     def find_tagged_with(*args)
       options = find_options_for_find_tagged_with(*args)

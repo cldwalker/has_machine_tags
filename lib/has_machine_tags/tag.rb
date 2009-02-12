@@ -1,3 +1,7 @@
+# TODO
+# the flickr way
+# Url.tagged_with 'gem:user=*'  # => [url2] from above
+
 class Tag < ActiveRecord::Base
   has_many :taggings
   validates_presence_of :name

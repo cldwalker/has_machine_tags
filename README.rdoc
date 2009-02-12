@@ -30,7 +30,7 @@ Migrate your database from Rails root:
 
 == Usage
 
-Have a model use has_machine_tags
+Setup a model use has_machine_tags
 
   class Url < ActiveRecord::Base
     has_machine_tags
@@ -48,7 +48,19 @@ Let's create some urls with machine tags!
     
     url.tags # => [<Tag name:"gem:type=tagging">, <Tag name:"flickr">]
 
-Let's query them with machine tag syntax:
+Let's query them:
+
+    # Query urls tagged as a gem having type tagging
+    Url.tagged_with 'gem:type=tagging'  # => [url, url2] from above
+
+    # Non-machine tags work of course
+    Url.tagged_with 'flickr'  # => [url] from above
+
+    # tagged_with() is a named_scope so do your sweet chaining
+    Url.tagged_with('flickr').yet_another_finder(:sweet).paginate(:per_page=>30)
+
+Nothing interesting so far. We could've done the same with normal tagging.
+But what happens when we start with wildcard machine syntax.
 
     # Query urls tagged as gems (namespace = 'gem')
     Url.tagged_with 'gem:'  # => [url, url2] from above
@@ -61,15 +73,6 @@ Let's query them with machine tag syntax:
 
     # Query urls tagged as having a tagging value, regardless of namespace and predicate (value = 'tagging')
     Url.tagged_with '=tagging'  # => [url, url2] from above
-
-    # the flickr way
-    Url.tagged_with 'gem:user=*'  # => [url2] from above
-
-    # Non-machine tags work of course
-    Url.tagged_with 'flickr'  # => [url] from above
-
-    # tagged_with() is a named_scope so do your sweet chaining
-    Url.tagged_with('flickr').yet_another_finder(:sweet).paginate(:per_page=>30)
 
 See Tag for more details on machine tag syntax.
 

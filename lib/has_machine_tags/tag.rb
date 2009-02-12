@@ -79,16 +79,18 @@ class Tag < ActiveRecord::Base
   named_scope :namespace_counts, :select=>'*, namespace as counter, count(namespace) as count', :group=>"namespace HAVING count(namespace)>=1"
   named_scope :predicate_counts, :select=>'*, predicate as counter, count(predicate) as count', :group=>"predicate HAVING count(predicate)>=1"
   named_scope :value_counts, :select=>'*, value as counter, count(value) as count', :group=>"value HAVING count(value)>=1"
-  named_scope :namespace, lambda {|namespace| {:conditions=>{:namespace=>namespace}} }
-  named_scope :predicate, lambda {|predicate| {:conditions=>{:predicate=>predicate}} }
-  named_scope :value, lambda {|value| {:conditions=>{:value=>value}} }
+
+  def self.namespace(name) #:nodoc:
+    HasMachineTags::Namespace.new(name)
+  end
 
   # To be used with the *counts methods.
   # For example:
   #   stat(:namespace_counts) 
   # This prints out pairs of a namespaces and their counts in the tags table.
   def self.stat(type)
-    send(type).map {|e| [e.counter, e.count] }
+    shortcuts = {:n=>:namespace_counts, :p=>:predicate_counts, :v=>:value_counts }
+    send(shortcuts[type] || type).map {|e| [e.counter, e.count] }
   end
 
   # Takes a wildcard machine tag and returns matching tags.

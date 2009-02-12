@@ -26,14 +26,24 @@ module HasMachineTags
   end
   
   module SingletonMethods
-    # Takes a string of delimited tags or an array of tags
+    # Takes a string of delimited tags or an array of tags.
     # Note that each tag is interpreted as a possible wildcard machine tag.
-    # Also note that the below options apply to tagged_with().
     # 
     # Options:
     #   :exclude - Find models that are not tagged with the given tags
     #   :match_all - Find models that match all of the given tags, not just one, default: true
     #   :conditions - A piece of SQL conditions to add to the query
+    #
+    # Example:
+    #  Url.tagged_with 'something' # => fetches urls tagged with 'something'
+    #  Url.tagged_with 'gem:'      # => fetches urls tagged with tags that have namespace gem
+    #  Url.tagged_with 'gem:, something' # =>  fetches urls that are tagged with 'something'
+    #    and tags that have namespace gem
+    #   
+    #  Note: This method really only needs to be used for Rails < 2.1 . 
+    #  Rails 2.1 and greater should use tagged_with(), which acts the same but with
+    #  the benefits of named_scope.
+    #
     def find_tagged_with(*args)
       options = find_options_for_find_tagged_with(*args)
       options.blank? ? [] : find(:all,options)
@@ -58,7 +68,7 @@ module HasMachineTags
             string = match.map {|k,v|
               sanitize_sql(["#{tags_alias}.#{k} = ?", v])
             }.join(" AND ")
-            "( #{string} )"
+            "(#{string})"
           else
             sanitize_sql(["#{tags_alias}.name = ?", t])
           end

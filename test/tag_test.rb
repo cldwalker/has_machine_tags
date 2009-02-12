@@ -33,7 +33,7 @@ class HasMachineTags::TagTest < Test::Unit::TestCase
   
   context "match_wildcard_machine_tag" do
     test "matches namespace with asterisk" do
-      Tag.match_wildcard_machine_tag('name:*=*').should == [[:namespace,'name']]
+      Tag.match_wildcard_machine_tag('name:*=').should == [[:namespace,'name']]
     end
     
     test "matches namespace without asterisk" do
@@ -41,7 +41,7 @@ class HasMachineTags::TagTest < Test::Unit::TestCase
     end
     
     test "matches predicate with asterisk" do
-      Tag.match_wildcard_machine_tag('*:pred=*').should == [[:predicate,'pred']]
+      Tag.match_wildcard_machine_tag('*:pred=').should == [[:predicate,'pred']]
     end
     
     test "matches predicate without asterisk" do
@@ -59,15 +59,31 @@ class HasMachineTags::TagTest < Test::Unit::TestCase
     test "matches namespace and predicate without asterisk" do
       Tag.match_wildcard_machine_tag('name:pred').should == [[:namespace, 'name'], [:predicate, 'pred']]
     end
+
+    test "matches namespace and predicate with asterisk" do
+      Tag.match_wildcard_machine_tag('name:pred=').should == [[:namespace, 'name'], [:predicate, 'pred']]
+    end
     
     test "matches predicate and value without asterisk" do
       Tag.match_wildcard_machine_tag('pred=val').should == [[:predicate, 'pred'], [:value, 'val']]
+    end
+
+    test "matches predicate and value with asterisk" do
+      Tag.match_wildcard_machine_tag('*:pred=val').should == [[:predicate, 'pred'], [:value, 'val']]
     end
     
     test "matches namespace and value without asterisk" do
       Tag.match_wildcard_machine_tag('name.val').should == [[:namespace, 'name'], [:value, 'val']]
     end
+
+    test "matches namespace and value with asterisk" do
+      Tag.match_wildcard_machine_tag('name:*=val').should == [[:namespace, 'name'], [:value, 'val']]
+    end
     
+    test "doesn't match total wildcard" do
+      Tag.match_wildcard_machine_tag('*:*=').should == []
+    end
+
     test "doesn't match machine tag" do
       Tag.match_wildcard_machine_tag('name:pred=val').should == nil
     end

@@ -4,14 +4,13 @@ This plugin implements Flickr's machine tags as explained
 here[http://www.flickr.com/groups/api/discuss/72157594497877875]
 while still maintaining standard tagging behavior.
 
-Basically, a tag can have a namespace, a predicate and a value in the format
+Basically, a machine tag has a namespace, a predicate and a value in the format
     [namespace]:[predicate]=[value] 
 
-This allows for more precise tagging as tags can have the context of a namespace and predicate.
-I think of machine tags as object tags, mapping namespace and predicate to class and attribute of an
-object.
-
-This is an experiment in progress so api is subject to change.
+This allows for more precise tagging as tags can have unlimited contexts provided
+by combinations of namespaces and predicates. These unlimited contexts also make
+machine tags ripe for modeling relationships between objects. Read the Tag class
+documentation for a more thorough explanation.
 
 == Install
 
@@ -111,7 +110,9 @@ Of course you can do the standard tag_list manipulation:
     url.tag_list # => ["gem:type=tagging", "flickr"]
 
 
-== Limitations
+== Caveats
+
+This is an experiment in progress so the api is subject to change.
 
 Since machine tags require special characters to implement its goodness,
 these characters are off limit unless used in the machine tag context:
@@ -127,6 +128,7 @@ these characters are off limit unless used in the machine tag context:
 
 == Credits
 
-Thanks goes to the {acts-as-taggable-on plugin}[http://github.com/mbleigh/acts-as-taggable-on/tree/master]
+Thanks goes to Flickr for implementing this clever tagging model.
+Thanks also goes to the {acts-as-taggable-on plugin}[http://github.com/mbleigh/acts-as-taggable-on/tree/master]
 for their finder code and the {is_taggable plugin}[http://github.com/giraffesoft/is_taggable/tree/master]
 for demonstrating sane testing for a Rails plugin.

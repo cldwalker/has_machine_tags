@@ -65,7 +65,7 @@ class HasMachineTags::TagTest < Test::Unit::TestCase
     end
     
     test "matches namespace and value without asterisk" do
-      Tag.match_wildcard_machine_tag('name::val').should == [[:namespace, 'name'], [:value, 'val']]
+      Tag.match_wildcard_machine_tag('name.val').should == [[:namespace, 'name'], [:value, 'val']]
     end
     
     test "doesn't match machine tag" do

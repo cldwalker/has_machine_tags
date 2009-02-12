@@ -18,17 +18,22 @@ class Tag < ActiveRecord::Base
   named_scope :predicate, lambda {|predicate| {:conditions=>{:predicate=>predicate}} }
   named_scope :value, lambda {|value| {:conditions=>{:value=>value}} }
 
+  # To be used with the *counts methods.
+  # For example:
+  #   stat(:namespace_counts) 
+  # This prints out pairs of a namespaces and their counts in the tags table.
   def self.stat(type)
     send(type).map {|e| [e.counter, e.count] }
   end
 
+  # Takes machine tag syntax
   def self.machine_tags(name)
     conditions = if (match = match_wildcard_machine_tag(name))
       match.map {|k,v|
         sanitize_sql(["#{k} = ?", v])
       }.join(" AND ")
     else
-      sanitize_sql(["#{tags_alias}.name = ?", name])
+      sanitize_sql(["name = ?", name])
     end
     find(:all, :conditions=>conditions)
   end
@@ -37,14 +42,14 @@ class Tag < ActiveRecord::Base
   # namespace:*=* -> namespace:
   # *:predicate=* -> predicate=
   # *:*=value     -> :value
-  def self.match_wildcard_machine_tag(name)
+  def self.match_wildcard_machine_tag(name) #:nodoc:
     if name =~ /^(#{NAMESPACE_REGEX}|\*)\:(#{PREDICATE_REGEX}|\*)\=(#{VALUE_REGEX}|\*)$/
       result = [[:namespace, $1], [:predicate, $2], [:value, $3]].select {|k,v| ![nil,'*'].include?(v) }
       result.size == 3 ? nil : result
     #duo shortcuts
-    elsif name =~ /^(#{NAMESPACE_REGEX}\:#{PREDICATE_REGEX})|(#{PREDICATE_REGEX}\=#{VALUE_REGEX})|(#{NAMESPACE_REGEX}\:\:#{VALUE_REGEX})$/
+    elsif name =~ /^(#{NAMESPACE_REGEX}\:#{PREDICATE_REGEX})|(#{PREDICATE_REGEX}\=#{VALUE_REGEX})|(#{NAMESPACE_REGEX}\.#{VALUE_REGEX})$/
       $1 ? [:namespace, :predicate].zip($1.split(":")) : ($2 ? [:predicate, :value].zip($2.split("=")) :
-        [:namespace, :value].zip($3.split('::')) )
+        [:namespace, :value].zip($3.split('.')) )
     #single shortcuts
     elsif name =~ /^(#{NAMESPACE_REGEX})(?:\:)|(#{PREDICATE_REGEX})(?:\=)|(?:\=)(#{VALUE_REGEX})$/
       $1 ? [[:namespace, $1]] : ($2 ? [[:predicate, $2]] : [[:value, $3]])
@@ -53,7 +58,7 @@ class Tag < ActiveRecord::Base
     end
   end
   
-  def extract_from_name(tag_name)
+  def extract_from_name(tag_name) #:nodoc:
     (tag_name =~ /^(#{NAMESPACE_REGEX})\:(#{PREDICATE_REGEX})\=(#{VALUE_REGEX})$/) ? [$1, $2, $3] : nil
   end
 

@@ -1,15 +1,17 @@
 == Description
 
 This plugin implements Flickr's machine tags as explained
-here[http://www.flickr.com/groups/api/discuss/72157594497877875] .
+here[http://www.flickr.com/groups/api/discuss/72157594497877875]
+while still maintaining standard tagging behavior.
 
 Basically, a tag can have a namespace, a predicate and a value in the format
-`[namespace]:[predicate]=[value]` . This allows for more precise tagging as
-tagged items can be queried by a namespace, predicate, value or any combination of them.
-I think of machine tags as object tags, mapping namespace and predicate to class and attribute
-of an object.
+    [namespace]:[predicate]=[value] 
 
-This is an experiment in progress so api's are subject to change.
+This allows for more precise tagging as tags can have the context of a namespace and predicate.
+I think of machine tags as object tags, mapping namespace and predicate to class and attribute of an
+object.
+
+This is an experiment in progress so api is subject to change.
 
 == Install
 
@@ -28,7 +30,7 @@ Migrate your database from Rails root:
 
 == Usage
 
-Have your Url model use has_machine tags
+Have a model use has_machine_tags
 
   class Url < ActiveRecord::Base
     has_machine_tags
@@ -46,30 +48,41 @@ Let's create some urls with machine tags!
     
     url.tags # => [<Tag name:"gem:type=tagging">, <Tag name:"flickr">]
 
-Let's query them
+Let's query them with machine tag syntax:
 
-    # query urls tagged with tags that have tagging as a value 
-    # my shorthand
-    Url.tagged_with '=tagging'  # => [url, url2] from above
-    # the flickr way
-    Url.tagged_with '*:*=tagging'  # => [url, url2] from above
+    # Query urls tagged as gems (namespace = 'gem')
+    Url.tagged_with 'gem:'  # => [url, url2] from above
 
-    # query urls tagged with tags that have a gem with a user
-    # my shorthand
+    # Query urls tagged as having a user, regardless of namespace and value (predicate = 'user')
+    Url.tagged_with 'user='  # => [url2] from above
+
+    # Query urls tagged as gems having a user ( namespace ='gem' AND predicate = 'user')
     Url.tagged_with 'gem:user'  # => [url2] from above
+
+    # Query urls tagged as having a tagging value, regardless of namespace and predicate (value = 'tagging')
+    Url.tagged_with '=tagging'  # => [url, url2] from above
+
     # the flickr way
     Url.tagged_with 'gem:user=*'  # => [url2] from above
 
-    #Non-machine tags work of course
+    # Non-machine tags work of course
     Url.tagged_with 'flickr'  # => [url] from above
 
-    #tagged_with() is a named_scope so do your chaining as needed
-    Url.tagged_with('flickr').created(2.days.ago).yet_another_finder(:sweet)
+    # tagged_with() is a named_scope so do your sweet chaining
+    Url.tagged_with('flickr').yet_another_finder(:sweet).paginate(:per_page=>30)
 
-You can manipulate a tag list just like you would an array with the benefit
-that a comma delimited string is converted to an array.
+See Tag for more details on machine tag syntax.
 
-    # Set tag_list explicitly
+The same machine tag syntax can be used to fetch tags:
+
+    # Tags that are gems
+    Tag.machine_tags 'gem:' # => [<Tag name:"gem:type=tagging">, <Tag name:"gem:user=giraffesoft">]
+
+    # Tags that have a user predicate # => [<Tag name:"gem:user=giraffesoft">]
+    Tag.machine_tags 'user='
+
+Of course you can do the standard tag_list manipulation:
+
     url.tag_list = "comma, delimited"
     url.save
     url.tag_list # =>['comma', 'delimited']
@@ -91,14 +104,19 @@ that a comma delimited string is converted to an array.
 
 == Limitations
 
+Since machine tags require special characters to implement its goodness,
+these characters are off limit unless used in the machine tag context:
+
+  '.', ':' , '*' , '=' , ','
+
 == Todo
 
-* Console methods/visualizations for showing relations between namespaces, predicates + values
+* Console methods for showing relations between namespaces, predicates + values
 * Add support for DataMapper to be more ORM-agnostic
 * Play friendly with other tagging plugins as needed.
 
 == Credits
 
-  Thanks goes to the {acts-as-taggable-on plugin}[http://github.com/mbleigh/acts-as-taggable-on/tree/master]
-  for their finder code and the {is_taggable plugin}[http://github.com/giraffesoft/is_taggable/tree/master]
-  for demonstrating sane testing for a Rails plugin.
+Thanks goes to the {acts-as-taggable-on plugin}[http://github.com/mbleigh/acts-as-taggable-on/tree/master]
+for their finder code and the {is_taggable plugin}[http://github.com/giraffesoft/is_taggable/tree/master]
+for demonstrating sane testing for a Rails plugin.

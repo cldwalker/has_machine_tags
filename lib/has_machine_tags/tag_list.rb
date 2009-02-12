@@ -1,5 +1,5 @@
 module HasMachineTags
-  class TagList < Array
+  class TagList < Array #:nodoc:
     cattr_accessor :delimiter
     self.delimiter = ','
   

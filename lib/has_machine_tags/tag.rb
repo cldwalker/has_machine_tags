@@ -65,12 +65,13 @@
 
 class Tag < ActiveRecord::Base
   has_many :taggings
+  
   validates_presence_of :name
   validates_uniqueness_of :name
   before_save :update_name_related_columns
   
   NAMESPACE_REGEX = "[a-z](?:[a-z0-9_]+)"
-  PREDICATE_REGEX = "[a-z](?:[a-z0-9_]+)"
+  PREDICATE_REGEX = "[a-z](?:[a-z0-9_-]+)"
   VALUE_REGEX = '.+'
 
   #disallow machine tags special characters and tag list delimiter OR allow machine tag format
@@ -80,8 +81,12 @@ class Tag < ActiveRecord::Base
   named_scope :predicate_counts, :select=>'*, predicate as counter, count(predicate) as count', :group=>"predicate HAVING count(predicate)>=1"
   named_scope :value_counts, :select=>'*, value as counter, count(value) as count', :group=>"value HAVING count(value)>=1"
 
-  def self.namespace(name) #:nodoc:
-    HasMachineTags::Namespace.new(name)
+  def self.namespace(name, options={}) #:nodoc:
+    HasMachineTags::Namespace.new(name, options)
+  end
+  
+  def self.tag_group(wildcard_mtag, options={}) #:nodoc:
+    HasMachineTags::TagGroup.new(wildcard_mtag, options)
   end
 
   # To be used with the *counts methods.

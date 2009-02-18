@@ -17,11 +17,16 @@ module HasMachineTags
         include HasMachineTags::InstanceMethods
         extend HasMachineTags::SingletonMethods
         if respond_to?(:named_scope)
-          named_scope :tagged_with, lambda{ |tags, options|
-            find_options_for_find_tagged_with(tags, options)
+          named_scope :tagged_with, lambda{ |*args|
+            find_options_for_find_tagged_with(*args)
           }
         end
       end
+      
+      # model = self.to_s
+      # 'Tag'.constantize.class_eval do
+      #   has_many(model.tableize, :through => :taggings, :source => :taggable, :source_type =>model)
+      # end      
     end
   end
   
@@ -31,7 +36,7 @@ module HasMachineTags
     # 
     # Options:
     #   :exclude - Find models that are not tagged with the given tags
-    #   :match_all - Find models that match all of the given tags, not just one, default: true
+    #   :match_all - Find models that match all of the given tags, not just one (doesn't work with machine tags yet)
     #   :conditions - A piece of SQL conditions to add to the query
     #
     # Example:
@@ -50,7 +55,7 @@ module HasMachineTags
     end
     
     def find_options_for_find_tagged_with(tags, options = {}) #:nodoc:
-      options.reverse_merge!(:match_all=>true)
+      # options.reverse_merge!(:match_all=>true)
       tags = TagList.new(tags)
       return {} if tags.empty?
 
@@ -59,12 +64,14 @@ module HasMachineTags
       
       taggings_alias, tags_alias = "#{table_name}_taggings", "#{table_name}_tags"
       
+      machine_tag_used = false
       if options.delete(:exclude)
         tags_conditions = tags.map { |t| sanitize_sql(["#{Tag.table_name}.name = ?", t]) }.join(" OR ")
         conditions << sanitize_sql(["#{table_name}.id NOT IN (SELECT #{Tagging.table_name}.taggable_id FROM #{Tagging.table_name} LEFT OUTER JOIN #{Tag.table_name} ON #{Tagging.table_name}.tag_id = #{Tag.table_name}.id WHERE (#{tags_conditions}) AND #{Tagging.table_name}.taggable_type = #{quote_value(base_class.name)})", tags])
       else
-        conditions << tags.map {|t|
+        tag_sql = tags.map {|t|
           if match = Tag.match_wildcard_machine_tag(t)
+            machine_tag_used = true
             string = match.map {|k,v|
               sanitize_sql(["#{tags_alias}.#{k} = ?", v])
             }.join(" AND ")
@@ -73,9 +80,17 @@ module HasMachineTags
             sanitize_sql(["#{tags_alias}.name = ?", t])
           end
         }.join(" OR ")
-
+        conditions << tag_sql
+        
         if options.delete(:match_all)
-          group = "#{taggings_alias}.taggable_id HAVING COUNT(#{taggings_alias}.taggable_id) = #{tags.size}"
+          group = "#{taggings_alias}.taggable_id HAVING COUNT(#{taggings_alias}.taggable_id) = "
+          if machine_tag_used
+            #Since a machine tag matches multiple tags per given tag, we need to dynamically calculate the count
+            #TODO: this select needs to return differently for each taggable_id
+            group += "(SELECT count(id) FROM #{Tag.table_name} #{tags_alias} WHERE #{tag_sql})"
+          else
+            group += tags.size.to_s
+          end
         end
       end
       
@@ -89,9 +104,25 @@ module HasMachineTags
   end
   
   module InstanceMethods
+    
+    def quick_mode_tag_list(list) #:nodoc:
+      mtag_list = TagList.new(list)
+      mtag_list = mtag_list.map {|e|
+        if e.include?(":")
+          namespace,other = e.split(":")
+          other.split(";").map {|e| 
+            e.include?("=") ? "#{namespace}:#{e}" : "#{namespace}:tags=#{e}"
+          }
+        else
+          e
+        end
+      }.flatten
+      TagList.new(mtag_list)
+    end
+    
     # Set tag list with an array of tags or comma delimited string of tags
     def tag_list=(list)
-      @tag_list = TagList.new(list)
+      @tag_list = quick_mode_tag_list(list)
     end
 
     # Fetches latest tag list for an object

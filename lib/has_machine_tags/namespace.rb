@@ -1,12 +1,13 @@
 module HasMachineTags
-  class TagGroup
+  class NamespaceGroup
     def initialize(name, options={})
       @name = name.to_s
       @options = options
+      @tags = options[:tags] if options[:tags]
     end
     
     def tags
-      @tags ||= Tag.machine_tags(@name)
+      @tags ||= Tag.find_all_by_namespace(@name)
     end
     
     def predicates
@@ -80,7 +81,7 @@ module HasMachineTags
     end
     
     def format_result(result)
-      "#{result.name}"
+      "#{result.id}: #{result.name}"
     end
 
     def inspect
@@ -103,15 +104,41 @@ module HasMachineTags
     
   end
   
-  class QueryGroup < TagGroup
+  class TagGroup < NamespaceGroup
+    def namespaces
+      tags.map(&:namespace).uniq
+    end
+    
+    def outline_view(type=nil)
+      "\n" + namespace_groups.map {|e| e.outline_view(type) }.join("\n")
+    end
+    
+    def inspect; super; end
+    
+    def namespace_tags
+      tags.inject({}) {|h,t|
+        (h[t.namespace] ||= []) << t
+        h
+      }
+    end
+    
+    def namespace_groups
+      unless @namespace_groups
+        @namespace_groups = namespace_tags.map {|name, tags|
+          NamespaceGroup.new(name, :tags=>tags)
+        }
+      end
+      @namespace_groups
+    end
+    
     def tags
-      @tags ||= Url.tagged_with(@name).map(&:tags).flatten.uniq
+      @tags ||= Tag.machine_tags(@name)
     end
   end
   
-  class Namespace < TagGroup
+  class QueryGroup < TagGroup
     def tags
-      @tags ||= Tag.find_all_by_namespace(@name)
+      @tags ||= Url.tagged_with(@name).map(&:tags).flatten.uniq
     end
   end
 end

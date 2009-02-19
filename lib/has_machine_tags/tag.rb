@@ -88,14 +88,6 @@ class Tag < ActiveRecord::Base
   def self.predicates; distinct_predicates.map(&:predicate).compact; end
   def self.values; distinct_values.map(&:value).compact; end
   
-  def self.namespace(name, options={}) #:nodoc:
-    HasMachineTags::Namespace.new(name, options)
-  end
-  
-  def self.tag_group(wildcard_mtag, options={}) #:nodoc:
-    HasMachineTags::TagGroup.new(wildcard_mtag, options)
-  end
-
   # To be used with the *counts methods.
   # For example:
   #   stat(:namespace_counts) 

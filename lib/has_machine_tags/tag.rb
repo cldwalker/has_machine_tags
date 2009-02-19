@@ -80,7 +80,14 @@ class Tag < ActiveRecord::Base
   named_scope :namespace_counts, :select=>'*, namespace as counter, count(namespace) as count', :group=>"namespace HAVING count(namespace)>=1"
   named_scope :predicate_counts, :select=>'*, predicate as counter, count(predicate) as count', :group=>"predicate HAVING count(predicate)>=1"
   named_scope :value_counts, :select=>'*, value as counter, count(value) as count', :group=>"value HAVING count(value)>=1"
+  named_scope :distinct_namespaces, :select=>"distinct namespace"
+  named_scope :distinct_predicates, :select=>"distinct predicate"
+  named_scope :distinct_values, :select=>"distinct value"
 
+  def self.namespaces; distinct_namespaces.map(&:namespace).compact; end
+  def self.predicates; distinct_predicates.map(&:predicate).compact; end
+  def self.values; distinct_values.map(&:value).compact; end
+  
   def self.namespace(name, options={}) #:nodoc:
     HasMachineTags::Namespace.new(name, options)
   end

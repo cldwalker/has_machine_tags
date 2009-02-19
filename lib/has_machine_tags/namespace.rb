@@ -66,15 +66,46 @@ module HasMachineTags
       predicate_map.each do |pred, vals|
         body << [level_delim + pred]
         values = predicate_view(pred, type) || vals
-        body += values.map {|e|
-            level_delim * 2 + e
+        values.each {|e|
+            body << level_delim * 2 + e
+            if type == :result
+              urls = Url.tagged_with("#{@name}:#{pred}=#{e}")
+              urls.each {|u|
+                body << level_delim * 3 + format_result(u)
+              }
+            end
         }
       end
       body.join("\n")
     end
+    
+    def format_result(result)
+      "#{result.name}"
+    end
 
     def inspect
       outline_view(@options[:view])
+    end
+    
+    def duplicate_values
+      array_duplicates(values)
+    end
+    
+    def array_duplicates(array)
+        hash = array.inject({}) {|h,e|
+          h[e] ||= 0
+          h[e] += 1
+          h
+        }
+        hash.delete_if {|k,v| v<=1}
+        hash.keys
+    end
+    
+  end
+  
+  class QueryGroup < TagGroup
+    def tags
+      @tags ||= Url.tagged_with(@name).map(&:tags).flatten.uniq
     end
   end
   

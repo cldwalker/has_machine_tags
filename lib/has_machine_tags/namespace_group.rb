@@ -1,5 +1,7 @@
 module HasMachineTags
-  class NamespaceGroup
+  # These classes are used for querying machine tags and grouping results as outlines.
+  # These methods are for console use and may change quickly.
+  class NamespaceGroup #:nodoc:
     def initialize(name, options={})
       @name = name.to_s
       @options = options
@@ -104,7 +106,7 @@ module HasMachineTags
     
   end
   
-  class TagGroup < NamespaceGroup
+  class TagGroup < NamespaceGroup #:nodoc:
     def namespaces
       tags.map(&:namespace).uniq
     end
@@ -136,7 +138,7 @@ module HasMachineTags
     end
   end
   
-  class QueryGroup < TagGroup
+  class QueryGroup < TagGroup #:nodoc:
     def tags
       @tags ||= Url.tagged_with(@name).map(&:tags).flatten.uniq
     end

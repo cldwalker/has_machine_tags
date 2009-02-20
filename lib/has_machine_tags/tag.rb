@@ -1,5 +1,5 @@
 # == Machine Tags
-# Machine tags are in the format: 
+# Machine tags, also known as triple tags, are in the format: 
 #   [namespace]:[predicate]=[value]
 # 
 # As explained here[http://www.flickr.com/groups/api/discuss/72157594497877875],

@@ -128,7 +128,7 @@ these characters are off limit unless used in the machine tag context:
 
 == Credits
 
-Thanks goes to Flickr for implementing this clever tagging model.
+Thanks goes to Flickr for popularizing this tagging model.
 Thanks also goes to the {acts-as-taggable-on plugin}[http://github.com/mbleigh/acts-as-taggable-on/tree/master]
 for their finder code and the {is_taggable plugin}[http://github.com/giraffesoft/is_taggable/tree/master]
 for demonstrating sane testing for a Rails plugin.

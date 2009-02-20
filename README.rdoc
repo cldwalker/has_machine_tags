@@ -18,9 +18,13 @@ Install as a gem
 
     bash> gem install cldwalker-has_machine_tags -s http://gems.github.com
 
+    # add in your environment.rb
+    config.gem "cldwalker-has_machine_tags", :source => "http://gems.github.com", :lib => "has_machine_tags"
+
 Or as a plugin
 
     bash> script/plugin install git://github.com/cldwalker/has_machine_tags.git
+
 
 Migrate your database from Rails root:
   

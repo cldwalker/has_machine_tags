@@ -25,7 +25,7 @@ begin
     s.authors = ["Gabriel Horner"]
     s.has_rdoc = true
     s.extra_rdoc_files = ["README.rdoc", "LICENSE.txt"]
-    s.files = FileList["README.rdoc", "LICENSE.txt", "{generators,bin,lib,test}/**/*"]
+    s.files = FileList["README.rdoc", "LICENSE.txt", "init.rb", "Rakefile", "VERSION.yml", "{generators,bin,lib,test}/**/*"]
   end
 
 rescue LoadError

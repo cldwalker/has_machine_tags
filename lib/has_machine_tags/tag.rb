@@ -84,9 +84,11 @@ class Tag < ActiveRecord::Base
   named_scope :distinct_predicates, :select=>"distinct predicate"
   named_scope :distinct_values, :select=>"distinct value"
 
+  #:stopdoc:
   def self.namespaces; distinct_namespaces.map(&:namespace).compact; end
   def self.predicates; distinct_predicates.map(&:predicate).compact; end
   def self.values; distinct_values.map(&:value).compact; end
+  #:startdoc:
   
   # To be used with the *counts methods.
   # For example:

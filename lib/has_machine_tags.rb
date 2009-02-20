@@ -1,6 +1,7 @@
 current_dir = File.dirname(__FILE__)
 $:.unshift(current_dir) unless $:.include?(current_dir) || $:.include?(File.expand_path(current_dir))
 require 'has_machine_tags/tag_list'
+require 'has_machine_tags/console'
 
 module HasMachineTags
   def self.included(base) #:nodoc:
@@ -20,6 +21,10 @@ module HasMachineTags
         
         include HasMachineTags::InstanceMethods
         extend HasMachineTags::SingletonMethods
+        if options[:console]
+          include HasMachineTags::Console::InstanceMethods
+          extend HasMachineTags::Console::ClassMethods
+        end
         if respond_to?(:named_scope)
           named_scope :tagged_with, lambda{ |*args|
             find_options_for_find_tagged_with(*args)

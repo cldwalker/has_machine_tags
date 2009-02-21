@@ -1,3 +1,4 @@
+module HasMachineTags
 # == Machine Tags
 # Machine tags, also known as triple tags, are in the format: 
 #   [namespace]:[predicate]=[value]
@@ -62,8 +63,6 @@
 #   Since a machine tag tracks three attributes (namespace, predicate and value), it's possible to develop relationships
 #   between the attributes. This means namespaces can have many predicates and predicates can have many values.
 #   Since this closely resembles object modeling, we can start to use tagging to form relationships between tagged items and other objects.
-
-module HasMachineTags
   module TagMethods
     NAMESPACE_REGEX = "[a-z](?:[a-z0-9_]+)"
     PREDICATE_REGEX = "[a-z](?:[a-z0-9_-]+)"

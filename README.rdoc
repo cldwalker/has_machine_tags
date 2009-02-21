@@ -9,7 +9,7 @@ Basically, a machine tag has a namespace, a predicate and a value in the format
 
 This allows for more precise tagging as tags can have unlimited contexts provided
 by combinations of namespaces and predicates. These unlimited contexts also make
-machine tags ripe for modeling relationships between objects. Read the Tag class
+machine tags ripe for modeling relationships between objects. Read the HasMachineTags::TagMethods class
 documentation for a more thorough explanation.
 
 == Install

@@ -118,6 +118,11 @@ module HasMachineTags
         end
         find(:all, :conditions=>conditions)
       end
+      
+      # Builds a machine tag string given namespace, predicate and value.
+      def build_machine_tag(namespace, predicate, value)
+        "#{namespace}:#{predicate}=#{value}"
+      end
   
       # Valid wildcards with their equivalent shortcuts
       # namespace:*=* -> namespace:

@@ -12,6 +12,8 @@ by combinations of namespaces and predicates. These unlimited contexts also make
 machine tags ripe for modeling relationships between objects. Read the HasMachineTags::TagMethods class
 documentation for a more thorough explanation.
 
+A demo app using this plugin is {here}[http://github.com/cldwalker/tag-tree].
+
 == Install
 
 Install as a gem

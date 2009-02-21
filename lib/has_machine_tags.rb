@@ -10,6 +10,7 @@ module HasMachineTags
   
   module ClassMethods
     # Options
+    #   :console - Adds additional helper methods mainly for console use. See HasMachineTags::Console.
     #   :reverse_has_many - Defines a has_many :through from tags to the model using the plural of the model name.
     def has_machine_tags(options={})
       cattr_accessor :quick_mode
@@ -132,9 +133,13 @@ module HasMachineTags
     
     # Set tag list with an array of tags or comma delimited string of tags
     def tag_list=(list)
-      @tag_list = quick_mode ? quick_mode_tag_list(list) : TagList.new(list)
+      @tag_list = current_tag_list(list)
     end
-
+    
+    def current_tag_list(list)
+      quick_mode ? quick_mode_tag_list(list) : TagList.new(list)
+    end
+    
     # Fetches latest tag list for an object
     def tag_list
       @tag_list ||= self.tags.map(&:name)

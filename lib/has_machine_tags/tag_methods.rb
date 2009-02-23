@@ -67,6 +67,9 @@ module HasMachineTags
     NAMESPACE_REGEX = "[a-z](?:[a-z0-9_]+)"
     PREDICATE_REGEX = "[a-z](?:[a-z0-9_-]+)"
     VALUE_REGEX = '.+'
+    #TODO: use delimiters in this file
+    PREDICATE_DELIMITER = ':'
+    VALUE_DELIMITER = '='
 
     def self.included(base) #:nodoc:
       name_format = /\A(([^\*\=\:\.,]+)|(#{NAMESPACE_REGEX}\:#{PREDICATE_REGEX}\=#{VALUE_REGEX}))\Z/

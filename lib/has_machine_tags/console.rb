@@ -11,14 +11,14 @@ module HasMachineTags
       end
 
       # Adds given list and saves.
-      def tag_add_and_save(*add_list)
+      def tag_add_and_save(add_list)
         self.tag_list = self.tag_list + current_tag_list(add_list)
         self.save
         self.tag_list
       end
       
       # Removes given list and saves.
-      def tag_remove_and_save(*remove_list)
+      def tag_remove_and_save(remove_list)
         self.tag_list = self.tag_list - current_tag_list(remove_list)
         self.save
         self.tag_list

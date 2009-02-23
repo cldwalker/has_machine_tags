@@ -10,9 +10,10 @@ module HasMachineTags
   end
   
   module ClassMethods
-    # Options
-    #   :console - Adds additional helper methods from HasMachineTags::Console to use mainly in irb.
-    #   :reverse_has_many - Defines a has_many :through from tags to the model using the plural of the model name.
+    # ==== Options:
+    # [:console] When true, adds additional helper methods from HasMachineTags::Console to use mainly in irb.
+    # [:reverse_has_many] Defines a has_many :through from tags to the model using the plural of the model name.
+    # [:quick_mode] When true, enables a quick mode to input machine tags with HasMachineTags::InstanceMethods.tag_list=(). See examples at HasMachineTags::TagList.new().
     def has_machine_tags(options={})
       cattr_accessor :quick_mode
       self.quick_mode = options[:quick_mode] || false
@@ -43,29 +44,13 @@ module HasMachineTags
   end
     
   module InstanceMethods
-    
-    def quick_mode_tag_list(list) #:nodoc:
-      mtag_list = TagList.new(list)
-      mtag_list = mtag_list.map {|e|
-        if e.include?(":")
-          namespace,other = e.split(":")
-          other.split(";").map {|e| 
-            e.include?("=") ? "#{namespace}:#{e}" : "#{namespace}:tags=#{e}"
-          }
-        else
-          e
-        end
-      }.flatten
-      TagList.new(mtag_list)
-    end
-    
-    # Set tag list with an array of tags or comma delimited string of tags
+    # Set tag list with an array of tags or comma delimited string of tags.
     def tag_list=(list)
       @tag_list = current_tag_list(list)
     end
     
-    def current_tag_list(list)
-      quick_mode ? quick_mode_tag_list(list) : TagList.new(list)
+    def current_tag_list(list) #:nodoc:
+      TagList.new(list, :quick_mode=>self.quick_mode)
     end
     
     # Fetches latest tag list for an object

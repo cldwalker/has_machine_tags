@@ -22,6 +22,22 @@ class HasMachineTagsTest < Test::Unit::TestCase
       @taggable.tag_list.should == arr
       @taggable.tag_list.to_s.should == arr.join(", ")
     end
+    
+    context "with quick_mode" do
+      before(:all) { TaggableModel.quick_mode = true }
+      after(:all) { TaggableModel.quick_mode = false }
+      
+      test "sets tag list normally with non quick_mode characters" do
+        arr = ['more', 'tag:type=dumb', 'really']
+        @taggable.tag_list = "more,tag:type=dumb,   really"
+        @taggable.tag_list.should == arr
+      end
+      
+      test "sets default predicate and infers namespace" do
+        @taggable.tag_list = "gem:irb;name=utility_belt, article"
+        @taggable.tag_list.should == ["gem:tags=irb", "gem:name=utility_belt", "article"]
+      end
+    end
   end
   
   context "HasMachineTags" do

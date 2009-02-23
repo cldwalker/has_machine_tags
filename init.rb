@@ -1,1 +1,1 @@
-require File.join(File.dirname(__FILE__), 'rails', init.rb')
+require File.join(File.dirname(__FILE__), 'rails', 'init.rb')

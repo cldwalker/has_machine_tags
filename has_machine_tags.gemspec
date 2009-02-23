@@ -2,11 +2,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{has_machine_tags}
-  s.version = "0.1.3"
+  s.version = "0.1.4"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Gabriel Horner"]
-  s.date = %q{2009-02-21}
+  s.date = %q{2009-02-23}
   s.description = %q{A rails tagging plugin implementing flickr's machine tags + maybe more (semantic tags)}
   s.email = %q{gabriel.horner@gmail.com}
   s.extra_rdoc_files = ["README.rdoc", "LICENSE.txt"]

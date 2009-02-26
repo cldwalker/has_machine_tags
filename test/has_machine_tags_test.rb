@@ -40,7 +40,7 @@ class HasMachineTagsTest < Test::Unit::TestCase
     end
   end
   
-  context "HasMachineTags" do
+  context "InstanceMethods" do
     before(:each) { @taggable = TaggableModel.new }
   
     test "creates all tags" do

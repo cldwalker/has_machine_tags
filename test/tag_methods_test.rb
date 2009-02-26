@@ -1,6 +1,6 @@
 require File.join(File.dirname(__FILE__), 'test_helper')
 
-class HasMachineTags::TagTest < Test::Unit::TestCase
+class HasMachineTags::TagMethodsTest < Test::Unit::TestCase
   test "create with normal tag name only touches name" do
     obj = Tag.create(:name=>'blah1')
     [:name, :namespace, :predicate, :value].map {|e| obj.send(e)}.should == ['blah1', nil, nil, nil]

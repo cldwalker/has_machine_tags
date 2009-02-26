@@ -55,7 +55,7 @@ module HasMachineTags
     
     # Fetches latest tag list for an object
     def tag_list
-      @tag_list ||= self.tags.map(&:name)
+      @tag_list ||= TagList.new(self.tags.map(&:name))
     end
 
     protected

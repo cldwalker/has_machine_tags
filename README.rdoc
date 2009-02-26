@@ -127,9 +127,9 @@ these characters are off limit unless used in the machine tag context:
 
 == Todo
 
-* More tests!
-* Console methods for showing relations between namespaces, predicates + values
-* Add support for DataMapper to be more ORM-agnostic
+* Add a match_all option to tagged_with().
+* More helper methods ie for showing relations between namespaces, predicates + values
+* Possible add support for other ORM's ie DataMapper.
 * Play friendly with other tagging plugins as needed.
 
 == Credits

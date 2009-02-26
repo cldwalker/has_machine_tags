@@ -8,6 +8,7 @@ require File.join(File.dirname(__FILE__), '..', 'init')
 
 #Setup logger
 require 'logger'
+# ActiveRecord::Base.logger = Logger.new(File.join(File.dirname(__FILE__), "test.log"))
 ActiveRecord::Base.logger = Logger.new(STDERR)
 ActiveRecord::Base.logger.level = Logger::WARN
 

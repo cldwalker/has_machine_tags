@@ -8,7 +8,7 @@ module HasMachineTags
 # and underscore. A value can contain any characters that normal tags use.
 # 
 # == Wildcard Machine Tags
-# Wildcard machine tag syntax is used with Tag.machine_tags() and {tagged_with() or find_tagged_with()}[link:classes/HasMachineTags/SingletonMethods.html] of tagged objects.
+# Wildcard machine tag syntax is used with Tag.machine_tags() and {tagged_with() or find_tagged_with()}[link:classes/HasMachineTags/Finder.html] of tagged objects.
 # This syntax allows one to fetch items that fall under a group of tags, as specified by namespace, predicate, value or
 # a combination of these ways. While this plugin supports {Flickr's wildcard format}[http://code.flickr.com/blog/2008/07/18/wildcard-machine-tag-urls/],
 # it also supports its own slightly shorter format.

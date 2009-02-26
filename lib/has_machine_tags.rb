@@ -1,6 +1,6 @@
 current_dir = File.dirname(__FILE__)
 $:.unshift(current_dir) unless $:.include?(current_dir) || $:.include?(File.expand_path(current_dir))
-require 'has_machine_tags/singleton_methods'
+require 'has_machine_tags/finder'
 require 'has_machine_tags/tag_list'
 require 'has_machine_tags/console'
 
@@ -23,7 +23,7 @@ module HasMachineTags
         after_save :save_tags
         
         include HasMachineTags::InstanceMethods
-        extend HasMachineTags::SingletonMethods
+        extend HasMachineTags::Finder
         if options[:console]
           include HasMachineTags::Console::InstanceMethods
           extend HasMachineTags::Console::ClassMethods

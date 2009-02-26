@@ -1,5 +1,5 @@
 module HasMachineTags
-  module SingletonMethods
+  module Finder
     # Takes a string of delimited tags or an array of tags.
     # Note that each tag is interpreted as a possible wildcard machine tag.
     # 

@@ -104,7 +104,21 @@ module HasMachineTags
       def build_machine_tag(namespace, predicate, value)
         "#{namespace}:#{predicate}=#{value}"
       end
-  
+      
+      # Returns an array of machine tag parts: [namespace, predicate, value]
+      def split_machine_tag(machine_tag)
+        extract_from_name(machine_tag) || []
+      end
+      
+      # Boolean indicating if given tag is a machine tag.
+      def machine_tag?(machine_tag)
+        !extract_from_name(machine_tag).nil?
+      end
+      
+      def extract_from_name(tag_name) #:nodoc:
+        (tag_name =~ /^(#{NAMESPACE_REGEX})\:(#{PREDICATE_REGEX})\=(#{VALUE_REGEX})$/) ? [$1, $2, $3] : nil
+      end
+
       # Valid wildcards with their equivalent shortcuts
       # namespace:*=* -> namespace:
       # *:predicate=* -> predicate=
@@ -127,14 +141,10 @@ module HasMachineTags
     end
   
     module InstanceMethods
-      def extract_from_name(tag_name) #:nodoc:
-        (tag_name =~ /^(#{NAMESPACE_REGEX})\:(#{PREDICATE_REGEX})\=(#{VALUE_REGEX})$/) ? [$1, $2, $3] : nil
-      end
-
       private
   
       def update_name_related_columns
-        if self.changed.include?('name') && (arr = extract_from_name(self.name))
+        if self.changed.include?('name') && (arr = self.class.extract_from_name(self.name))
           self[:namespace], self[:predicate], self[:value] = arr
         end
       end

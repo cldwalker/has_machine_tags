@@ -24,7 +24,7 @@ module HasMachineTags
       array = parse_quick_mode(array) if @options[:quick_mode]
       concat array
     end
-    
+
     def parse_quick_mode(mtag_list) #:nodoc:
       mtag_list = mtag_list.map {|e|
         if e.include?(Tag::PREDICATE_DELIMITER)
@@ -38,7 +38,29 @@ module HasMachineTags
         end
       }.flatten
     end
-  
+
+    def namespace_hashes #:nodoc:
+      self.inject({}) {|h, e|
+        namespace, *predicate_value = Tag.split_machine_tag(e)
+        (h[namespace] ||= []) << predicate_value unless namespace.nil?
+        h
+      }
+    end
+
+    def non_machine_tags
+      self.reject {|e| Tag.machine_tag?(e)}
+    end
+
+    # Converts tag_list to a stringified version of quick_mode.
+    def to_quick_mode_string
+      machine_tags = namespace_hashes.map {|namespace, predicate_values|
+        "#{namespace}:" + predicate_values.map {|pred, value|
+          pred == self.default_predicate ? value : "#{pred}#{Tag::VALUE_DELIMITER}#{value}"
+        }.join(QUICK_MODE_DELIMITER)
+      }
+      (machine_tags + non_machine_tags).join("#{delimiter} ")
+    end
+
     def to_s #:nodoc:
       join("#{delimiter} ")
     end

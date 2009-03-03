@@ -57,7 +57,11 @@ module HasMachineTags
     def tag_list
       @tag_list ||= TagList.new(self.tags.map(&:name))
     end
-
+    
+    def quick_mode_tag_list
+      tag_list.to_quick_mode_string
+    end
+    
     protected
     # :stopdoc:
     def save_tags

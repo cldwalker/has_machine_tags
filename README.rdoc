@@ -132,6 +132,9 @@ these characters are off limit unless used in the machine tag context:
 * Possible add support for other ORM's ie DataMapper.
 * Play friendly with other tagging plugins as needed.
 
+== Bugs
+Please report them here: http://cldwalker.lighthouseapp.com/projects/27818-has_machine_tags/tickets.
+
 == Credits
 
 Thanks goes to Flickr for popularizing this tagging model.

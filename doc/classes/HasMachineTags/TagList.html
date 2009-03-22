@@ -1,0 +1,137 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang='en'>
+  <head>
+    <title>Class: HasMachineTags::TagList [RDoc Documentation]</title>
+    <meta content='text/html; charset=utf-8' http-equiv='Content-Type'>
+    <link href='../.././rdoc-style.css' media='screen' rel='stylesheet' type='text/css'>
+    <script type='text/javascript'>
+      //<![CDATA[
+        function popupCode(url) {
+          window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+        }
+        
+        function toggleCode(id) {
+          var code = document.getElementById(id)
+        
+          code.style.display = code.style.display != 'block' ? 'block' : 'none'
+          return true
+        }
+        
+        // Make codeblocks hidden by default
+        document.writeln('<' + 'style type="text/css">.method .source pre { display: none }<\/style>')
+      //]]>
+    </script>
+  </head>
+  <body class='page'>
+    <div class='class' id='wrapper'>
+      <div class='header'>
+        <h1 class='name'>
+          <span class='type'>Class</span>
+          HasMachineTags::TagList
+        </h1>
+        <ol class='paths'>
+          <li>
+            <a href="../../files/lib/has_machine_tags/tag_list_rb.html">lib/has_machine_tags/tag_list.rb</a>
+          </li>
+        </ol>
+        <div class='parent'>
+          Parent:
+          <strong>Array</strong>
+        </div>
+      </div>
+      <div id='content'>
+        <div id='text'>
+          <div id='method-list'>
+            <h2>Methods</h2>
+            <h3>public class</h3>
+            <ol>
+              <li><a href="#M000016">new</a></li>
+            </ol>
+            <h3>public instance</h3>
+            <ol>
+              <li><a href="#M000017">non_machine_tags</a></li>
+              <li><a href="#M000018">to_quick_mode_string</a></li>
+            </ol>
+          </div>
+          <div id='section'>
+            <div id='constants-list'>
+              <h2>Constants</h2>
+              <div class='name-list'>
+                <table summary='Constants'>
+                  <tr class='top-aligned-row context-row'>
+                    <td class='context-item-name'>QUICK_MODE_DELIMITER</td>
+                    <td>=</td>
+                    <td class='context-item-value'>';'</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+            <div id='methods'>
+              <h2>Public class methods</h2>
+              <div class='public-class method' id='method-M000016'>
+                <a name='M000016'>      </a>
+                <div class='synopsis'>
+                  <span class='name'>new</span>
+                  <span class='arguments'>(string_or_array, options={})</span>
+                </div>
+                <div class='description'>
+                  <h4>Options:</h4>
+                  <dl>
+                  <dt>:quick_mode</dt><dd>When true enables a quick mode for inputing multiple machine tags under the
+                  same namespace. These machine tags are delimited by QUICK_MODE_DELIMITER.
+                  If a predicate is not specified, default_predicate() is used.
+                  
+                  <pre>Examples:&#x000A;# Namespace is added to tag 'type=test'.&#x000A;HasMachineTags::TagList.new(&quot;gem:name=flog;type=test, user:name=seattlerb&quot;, :quick_mode=&gt;true)&#x000A;=&gt; [&quot;gem:name=flog&quot;, &quot;gem:type=test&quot;, &quot;user:name=seattlerb&quot;]&#x000A;&#x000A;# Namespace and default predicate (tags) are added to tag 'git'.&#x000A;HasMachineTags::TagList.new(&quot;gem:name=grit;git, user:name=mojombo&quot;)&#x000A;=&gt; [&quot;gem:name=grit&quot;, &quot;gem:tags=git&quot;, &quot;user:name=mojombo&quot;]</pre>
+                  </dd>
+                  </dl>
+                </div>
+                <div class='source'>
+                  <a class='source-toggle' href='#' onclick="toggleCode('M000016-source'); return false">
+                    [show source]
+                  </a>
+                  <pre id='M000016-source'><span class="ruby-comment cmt"># File lib/has_machine_tags/tag_list.rb, line 21</span>&#x000A;    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">string_or_array</span>, <span class="ruby-identifier">options</span>={})&#x000A;      <span class="ruby-ivar">@options</span> = <span class="ruby-identifier">options</span>&#x000A;      <span class="ruby-identifier">array</span> = <span class="ruby-identifier">string_or_array</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Array</span>) <span class="ruby-operator">?</span> <span class="ruby-identifier">string_or_array</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">string_or_array</span>.<span class="ruby-identifier">split</span>(<span class="ruby-node">/\s*#{delimiter}\s*/</span>)&#x000A;      <span class="ruby-identifier">array</span> = <span class="ruby-identifier">parse_quick_mode</span>(<span class="ruby-identifier">array</span>) <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@options</span>[<span class="ruby-identifier">:quick_mode</span>]&#x000A;      <span class="ruby-identifier">concat</span> <span class="ruby-identifier">array</span>&#x000A;    <span class="ruby-keyword kw">end</span></pre>
+                </div>
+              </div>
+              <h2>Public instance methods</h2>
+              <div class='public-instance method' id='method-M000017'>
+                <a name='M000017'>      </a>
+                <div class='synopsis'>
+                  <span class='name'>non_machine_tags</span>
+                  <span class='arguments'>()</span>
+                </div>
+                <div class='source'>
+                  <a class='source-toggle' href='#' onclick="toggleCode('M000017-source'); return false">
+                    [show source]
+                  </a>
+                  <pre id='M000017-source'><span class="ruby-comment cmt"># File lib/has_machine_tags/tag_list.rb, line 50</span>&#x000A;    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">non_machine_tags</span>&#x000A;      <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">reject</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">e</span><span class="ruby-operator">|</span> <span class="ruby-constant">Tag</span>.<span class="ruby-identifier">machine_tag?</span>(<span class="ruby-identifier">e</span>)}&#x000A;    <span class="ruby-keyword kw">end</span></pre>
+                </div>
+              </div>
+              <div class='public-instance method' id='method-M000018'>
+                <a name='M000018'>      </a>
+                <div class='synopsis'>
+                  <span class='name'>to_quick_mode_string</span>
+                  <span class='arguments'>()</span>
+                </div>
+                <div class='description'>
+                  <p>
+                  Converts tag_list to a stringified version of quick_mode.
+                  </p>
+                </div>
+                <div class='source'>
+                  <a class='source-toggle' href='#' onclick="toggleCode('M000018-source'); return false">
+                    [show source]
+                  </a>
+                  <pre id='M000018-source'><span class="ruby-comment cmt"># File lib/has_machine_tags/tag_list.rb, line 55</span>&#x000A;    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">to_quick_mode_string</span>&#x000A;      <span class="ruby-identifier">machine_tags</span> = <span class="ruby-identifier">namespace_hashes</span>.<span class="ruby-identifier">map</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">namespace</span>, <span class="ruby-identifier">predicate_values</span><span class="ruby-operator">|</span>&#x000A;        <span class="ruby-node">&quot;#{namespace}:&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">predicate_values</span>.<span class="ruby-identifier">map</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">pred</span>, <span class="ruby-identifier">value</span><span class="ruby-operator">|</span>&#x000A;          <span class="ruby-identifier">pred</span> <span class="ruby-operator">==</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">default_predicate</span> <span class="ruby-value">? </span><span class="ruby-identifier">value</span> <span class="ruby-operator">:</span> <span class="ruby-node">&quot;#{pred}#{Tag::VALUE_DELIMITER}#{value}&quot;</span>&#x000A;        }.<span class="ruby-identifier">join</span>(<span class="ruby-constant">QUICK_MODE_DELIMITER</span>)&#x000A;      }&#x000A;      (<span class="ruby-identifier">machine_tags</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">non_machine_tags</span>).<span class="ruby-identifier">join</span>(<span class="ruby-node">&quot;#{delimiter} &quot;</span>)&#x000A;    <span class="ruby-keyword kw">end</span></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id='footer-push'></div>
+    </div>
+    <div id='footer'>
+      <a href="http://github.com/mislav/hanna/tree/master"><strong>Hanna</strong> RDoc template</a>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang='en'>
+  <head>
+    <title>Module: HasMachineTags::TagMethods::ClassMethods [RDoc Documentation]</title>
+    <meta content='text/html; charset=utf-8' http-equiv='Content-Type'>
+    <link href='../../.././rdoc-style.css' media='screen' rel='stylesheet' type='text/css'>
+    <script type='text/javascript'>
+      //<![CDATA[
+        function popupCode(url) {
+          window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+        }
+        
+        function toggleCode(id) {
+          var code = document.getElementById(id)
+        
+          code.style.display = code.style.display != 'block' ? 'block' : 'none'
+          return true
+        }
+        
+        // Make codeblocks hidden by default
+        document.writeln('<' + 'style type="text/css">.method .source pre { display: none }<\/style>')
+      //]]>
+    </script>
+  </head>
+  <body class='page'>
+    <div class='class' id='wrapper'>
+      <div class='header'>
+        <h1 class='name'>
+          <span class='type'>Module</span>
+          HasMachineTags::TagMethods::ClassMethods
+        </h1>
+        <ol class='paths'>
+          <li>
+            <a href="../../../files/lib/has_machine_tags/tag_methods_rb.html">lib/has_machine_tags/tag_methods.rb</a>
+          </li>
+        </ol>
+      </div>
+      <div id='content'>
+        <div id='text'>
+          <div id='method-list'>
+            <h2>Methods</h2>
+            <h3>public instance</h3>
+            <ol>
+              <li><a href="#M000009">build_machine_tag</a></li>
+              <li><a href="#M000011">machine_tag?</a></li>
+              <li><a href="#M000008">machine_tags</a></li>
+              <li><a href="#M000010">split_machine_tag</a></li>
+            </ol>
+          </div>
+          <div id='section'>
+            <div id='methods'>
+              <h2>Public instance methods</h2>
+              <div class='public-instance method' id='method-M000009'>
+                <a name='M000009'>      </a>
+                <div class='synopsis'>
+                  <span class='name'>build_machine_tag</span>
+                  <span class='arguments'>(namespace, predicate, value)</span>
+                </div>
+                <div class='description'>
+                  <p>
+                  Builds a machine tag string given namespace, predicate and value.
+                  </p>
+                </div>
+                <div class='source'>
+                  <a class='source-toggle' href='#' onclick="toggleCode('M000009-source'); return false">
+                    [show source]
+                  </a>
+                  <pre id='M000009-source'><span class="ruby-comment cmt"># File lib/has_machine_tags/tag_methods.rb, line 104</span>&#x000A;      <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">build_machine_tag</span>(<span class="ruby-identifier">namespace</span>, <span class="ruby-identifier">predicate</span>, <span class="ruby-identifier">value</span>)&#x000A;        <span class="ruby-node">&quot;#{namespace}:#{predicate}=#{value}&quot;</span>&#x000A;      <span class="ruby-keyword kw">end</span></pre>
+                </div>
+              </div>
+              <div class='public-instance method' id='method-M000011'>
+                <a name='M000011'>      </a>
+                <div class='synopsis'>
+                  <span class='name'>machine_tag?</span>
+                  <span class='arguments'>(machine_tag)</span>
+                </div>
+                <div class='description'>
+                  <p>
+                  Boolean indicating if given tag is a machine tag.
+                  </p>
+                </div>
+                <div class='source'>
+                  <a class='source-toggle' href='#' onclick="toggleCode('M000011-source'); return false">
+                    [show source]
+                  </a>
+                  <pre id='M000011-source'><span class="ruby-comment cmt"># File lib/has_machine_tags/tag_methods.rb, line 114</span>&#x000A;      <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">machine_tag?</span>(<span class="ruby-identifier">machine_tag</span>)&#x000A;        <span class="ruby-operator">!</span><span class="ruby-identifier">extract_from_name</span>(<span class="ruby-identifier">machine_tag</span>).<span class="ruby-identifier">nil?</span>&#x000A;      <span class="ruby-keyword kw">end</span></pre>
+                </div>
+              </div>
+              <div class='public-instance method' id='method-M000008'>
+                <a name='M000008'>      </a>
+                <div class='synopsis'>
+                  <span class='name'>machine_tags</span>
+                  <span class='arguments'>(name)</span>
+                </div>
+                <div class='description'>
+                  <p>
+                  Takes a wildcard machine tag and returns matching tags.
+                  </p>
+                </div>
+                <div class='source'>
+                  <a class='source-toggle' href='#' onclick="toggleCode('M000008-source'); return false">
+                    [show source]
+                  </a>
+                  <pre id='M000008-source'><span class="ruby-comment cmt"># File lib/has_machine_tags/tag_methods.rb, line 92</span>&#x000A;      <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">machine_tags</span>(<span class="ruby-identifier">name</span>)&#x000A;        <span class="ruby-identifier">conditions</span> = <span class="ruby-keyword kw">if</span> (<span class="ruby-identifier">match</span> = <span class="ruby-identifier">match_wildcard_machine_tag</span>(<span class="ruby-identifier">name</span>))&#x000A;          <span class="ruby-identifier">match</span>.<span class="ruby-identifier">map</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">k</span>,<span class="ruby-identifier">v</span><span class="ruby-operator">|</span>&#x000A;            <span class="ruby-identifier">sanitize_sql</span>([<span class="ruby-node">&quot;#{k} = ?&quot;</span>, <span class="ruby-identifier">v</span>])&#x000A;          }.<span class="ruby-identifier">join</span>(<span class="ruby-value str">&quot; AND &quot;</span>)&#x000A;        <span class="ruby-keyword kw">else</span>&#x000A;          <span class="ruby-identifier">sanitize_sql</span>([<span class="ruby-value str">&quot;name = ?&quot;</span>, <span class="ruby-identifier">name</span>])&#x000A;        <span class="ruby-keyword kw">end</span>&#x000A;        <span class="ruby-identifier">find</span>(<span class="ruby-identifier">:all</span>, <span class="ruby-identifier">:conditions=</span><span class="ruby-operator">&gt;</span><span class="ruby-identifier">conditions</span>)&#x000A;      <span class="ruby-keyword kw">end</span></pre>
+                </div>
+              </div>
+              <div class='public-instance method' id='method-M000010'>
+                <a name='M000010'>      </a>
+                <div class='synopsis'>
+                  <span class='name'>split_machine_tag</span>
+                  <span class='arguments'>(machine_tag)</span>
+                </div>
+                <div class='description'>
+                  <p>
+                  Returns an array of machine tag parts: [namespace, predicate, value]
+                  </p>
+                </div>
+                <div class='source'>
+                  <a class='source-toggle' href='#' onclick="toggleCode('M000010-source'); return false">
+                    [show source]
+                  </a>
+                  <pre id='M000010-source'><span class="ruby-comment cmt"># File lib/has_machine_tags/tag_methods.rb, line 109</span>&#x000A;      <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">split_machine_tag</span>(<span class="ruby-identifier">machine_tag</span>)&#x000A;        <span class="ruby-identifier">extract_from_name</span>(<span class="ruby-identifier">machine_tag</span>) <span class="ruby-operator">||</span> []&#x000A;      <span class="ruby-keyword kw">end</span></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id='footer-push'></div>
+    </div>
+    <div id='footer'>
+      <a href="http://github.com/mislav/hanna/tree/master"><strong>Hanna</strong> RDoc template</a>
+    </div>
+  </body>
+</html>

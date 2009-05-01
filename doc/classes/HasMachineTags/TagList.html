@@ -1,9 +1,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html lang='en'>
   <head>
-    <title>Class: HasMachineTags::TagList [RDoc Documentation]</title>
+    <title>: HasMachineTags::TagList [RDoc Documentation]</title>
     <meta content='text/html; charset=utf-8' http-equiv='Content-Type'>
-    <link href='../.././rdoc-style.css' media='screen' rel='stylesheet' type='text/css'>
+    <link href='../../rdoc-style.css' media='screen' rel='stylesheet' type='text/css'>
     <script type='text/javascript'>
       //<![CDATA[
         function popupCode(url) {
@@ -103,7 +103,7 @@
                   <a class='source-toggle' href='#' onclick="toggleCode('M000017-source'); return false">
                     [show source]
                   </a>
-                  <pre id='M000017-source'><span class="ruby-comment cmt"># File lib/has_machine_tags/tag_list.rb, line 50</span>&#x000A;    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">non_machine_tags</span>&#x000A;      <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">reject</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">e</span><span class="ruby-operator">|</span> <span class="ruby-constant">Tag</span>.<span class="ruby-identifier">machine_tag?</span>(<span class="ruby-identifier">e</span>)}&#x000A;    <span class="ruby-keyword kw">end</span></pre>
+                  <pre id='M000017-source'><span class="ruby-comment cmt"># File lib/has_machine_tags/tag_list.rb, line 51</span>&#x000A;    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">non_machine_tags</span>&#x000A;      <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">reject</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">e</span><span class="ruby-operator">|</span> <span class="ruby-constant">Tag</span>.<span class="ruby-identifier">machine_tag?</span>(<span class="ruby-identifier">e</span>)}&#x000A;    <span class="ruby-keyword kw">end</span></pre>
                 </div>
               </div>
               <div class='public-instance method' id='method-M000018'>
@@ -121,7 +121,7 @@
                   <a class='source-toggle' href='#' onclick="toggleCode('M000018-source'); return false">
                     [show source]
                   </a>
-                  <pre id='M000018-source'><span class="ruby-comment cmt"># File lib/has_machine_tags/tag_list.rb, line 55</span>&#x000A;    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">to_quick_mode_string</span>&#x000A;      <span class="ruby-identifier">machine_tags</span> = <span class="ruby-identifier">namespace_hashes</span>.<span class="ruby-identifier">map</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">namespace</span>, <span class="ruby-identifier">predicate_values</span><span class="ruby-operator">|</span>&#x000A;        <span class="ruby-node">&quot;#{namespace}:&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">predicate_values</span>.<span class="ruby-identifier">map</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">pred</span>, <span class="ruby-identifier">value</span><span class="ruby-operator">|</span>&#x000A;          <span class="ruby-identifier">pred</span> <span class="ruby-operator">==</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">default_predicate</span> <span class="ruby-value">? </span><span class="ruby-identifier">value</span> <span class="ruby-operator">:</span> <span class="ruby-node">&quot;#{pred}#{Tag::VALUE_DELIMITER}#{value}&quot;</span>&#x000A;        }.<span class="ruby-identifier">join</span>(<span class="ruby-constant">QUICK_MODE_DELIMITER</span>)&#x000A;      }&#x000A;      (<span class="ruby-identifier">machine_tags</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">non_machine_tags</span>).<span class="ruby-identifier">join</span>(<span class="ruby-node">&quot;#{delimiter} &quot;</span>)&#x000A;    <span class="ruby-keyword kw">end</span></pre>
+                  <pre id='M000018-source'><span class="ruby-comment cmt"># File lib/has_machine_tags/tag_list.rb, line 56</span>&#x000A;    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">to_quick_mode_string</span>&#x000A;      <span class="ruby-identifier">machine_tags</span> = <span class="ruby-identifier">namespace_hashes</span>.<span class="ruby-identifier">map</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">namespace</span>, <span class="ruby-identifier">predicate_values</span><span class="ruby-operator">|</span>&#x000A;        <span class="ruby-node">&quot;#{namespace}:&quot;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">predicate_values</span>.<span class="ruby-identifier">map</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">pred</span>, <span class="ruby-identifier">value</span><span class="ruby-operator">|</span>&#x000A;          <span class="ruby-identifier">pred</span> <span class="ruby-operator">==</span> <span class="ruby-keyword kw">self</span>.<span class="ruby-identifier">default_predicate</span> <span class="ruby-value">? </span><span class="ruby-identifier">value</span> <span class="ruby-operator">:</span> <span class="ruby-node">&quot;#{pred}#{Tag::VALUE_DELIMITER}#{value}&quot;</span>&#x000A;        }.<span class="ruby-identifier">join</span>(<span class="ruby-constant">QUICK_MODE_DELIMITER</span>)&#x000A;      }&#x000A;      (<span class="ruby-identifier">machine_tags</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">non_machine_tags</span>).<span class="ruby-identifier">join</span>(<span class="ruby-node">&quot;#{delimiter} &quot;</span>)&#x000A;    <span class="ruby-keyword kw">end</span></pre>
                 </div>
               </div>
             </div>

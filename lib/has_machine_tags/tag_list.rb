@@ -31,7 +31,8 @@ module HasMachineTags
           namespace, remainder = e.split(Tag::PREDICATE_DELIMITER)
           remainder.split(QUICK_MODE_DELIMITER).map {|e| 
             e.include?(Tag::VALUE_DELIMITER) ? "#{namespace}#{Tag::PREDICATE_DELIMITER}#{e}" :
-            Tag.build_machine_tag(namespace, default_predicate, e)
+            (@options[:default_predicate] ? Tag.build_machine_tag(namespace, @options[:default_predicate].call(e, namespace), e) :
+            Tag.build_machine_tag(namespace, default_predicate, e))
           }
         else
           e

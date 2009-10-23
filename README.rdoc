@@ -18,10 +18,10 @@ A demo app using this plugin is {here}[http://github.com/cldwalker/tag-tree].
 
 Install as a gem
 
-    bash> gem install cldwalker-has_machine_tags -s http://gems.github.com
+    bash> gem install has_machine_tags
 
     # add in your environment.rb
-    config.gem "cldwalker-has_machine_tags", :source => "http://gems.github.com", :lib => "has_machine_tags"
+    config.gem "has_machine_tags"
 
 Or as a plugin
 

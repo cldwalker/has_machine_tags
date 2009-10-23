@@ -18,14 +18,15 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |s|
     s.name = "has_machine_tags"
-    s.description = "A rails tagging plugin implementing flickr's machine tags + maybe more (semantic tags)"
-    s.summary = s.description
+    s.summary = "A rails tagging plugin implementing flickr's machine tags + maybe more (semantic tags)."
+    s.description = "This plugin implements Flickr's machine tags while still maintaining standard tagging behavior. This allows for more precise tagging as tags can have unlimited contexts provided by combinations of namespaces and predicates. These unlimited contexts also make machine tags ripe for modeling relationships between objects."
     s.email = "gabriel.horner@gmail.com"
-    s.homepage = "http://github.com/cldwalker/has_machine_tags"
+    s.homepage = "http://tagaholic.me/has_machine_tags/"
     s.authors = ["Gabriel Horner"]
+    s.rubyforge_project = ['tagaholic']
     s.has_rdoc = true
     s.extra_rdoc_files = ["README.rdoc", "LICENSE.txt"]
-    s.files = FileList["README.rdoc", "LICENSE.txt", "init.rb", "Rakefile", "VERSION.yml", "{rails,generators,bin,lib,test}/**/*"]
+    s.files = FileList["CHANGELOG.rdoc", "README.rdoc", "LICENSE.txt", "init.rb", "Rakefile", "VERSION.yml", "{rails,generators,bin,lib,test}/**/*"]
   end
 
 rescue LoadError

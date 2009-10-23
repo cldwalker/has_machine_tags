@@ -1,0 +1,19 @@
+== 0.1.6
+* Release to rubyforge
+* Allow default_predicates to be a proc
+
+== 0.1.5
+* Added finder tests
+* Added some helper methods
+
+== 0.1.4
+* Added console option and methods
+* Bug fix for init.rb
+
+== 0.1.3
+* Added quick mode
+* Added machine tag finders
+* Added reverse_has_many option
+
+== 0.1.0
+* Initial release

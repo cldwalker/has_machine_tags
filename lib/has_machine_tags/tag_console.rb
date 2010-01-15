@@ -18,15 +18,6 @@ module HasMachineTags
       def predicates; distinct_predicates.map(&:predicate).compact; end
       def values; distinct_values.map(&:value).compact; end
       #:startdoc:
-  
-      # To be used with the *counts methods.
-      # For example:
-      #   stat(:namespace_counts) 
-      # This prints out pairs of a namespaces and their counts in the tags table.
-      def stat(type)
-        shortcuts = {:n=>:namespace_counts, :p=>:predicate_counts, :v=>:value_counts }
-        send(shortcuts[type] || type).map {|e| [e.counter, e.count] }
-      end
     end
   end
 end

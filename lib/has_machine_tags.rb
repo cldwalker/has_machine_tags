@@ -11,7 +11,7 @@ module HasMachineTags
   
   module ClassMethods
     # ==== Options:
-    # [:console] When true, adds additional helper methods from HasMachineTags::Console to use mainly in irb.
+    # [:console] When true, adds additional instance methods to use mainly in irb.
     # [:reverse_has_many] Defines a has_many :through from tags to the model using the plural of the model name.
     # [:quick_mode] When true, enables a quick mode to input machine tags with HasMachineTags::InstanceMethods.tag_list=(). See examples at HasMachineTags::TagList.new().
     def has_machine_tags(options={})
@@ -24,10 +24,8 @@ module HasMachineTags
         
         include HasMachineTags::InstanceMethods
         extend HasMachineTags::Finder
-        if options[:console]
-          include HasMachineTags::Console::InstanceMethods
-          extend HasMachineTags::Console::ClassMethods
-        end
+        include HasMachineTags::Console::InstanceMethods if options[:console]
+
         if respond_to?(:named_scope)
           named_scope :tagged_with, lambda{ |*args|
             find_options_for_tagged_with(*args)

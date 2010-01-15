@@ -1,6 +1,11 @@
 module HasMachineTags
-  module TagConsole #:nodoc:
-    def self.included(base)
+  # Provides named_scopes and class methods to the Tag model, useful in machine tag analysis from the console.
+  # To use:
+  #   class Tag
+  #     include HasMachineTags::TagConsole
+  #   end
+  module TagConsole
+    def self.included(base) #:nodoc:
       base.class_eval %[
         named_scope :namespace_counts, :select=>'*, namespace as counter, count(namespace) as count', :group=>"namespace HAVING count(namespace)>=1"
         named_scope :predicate_counts, :select=>'*, predicate as counter, count(predicate) as count', :group=>"predicate HAVING count(predicate)>=1"
@@ -13,11 +18,12 @@ module HasMachineTags
     end
     
     module ClassMethods
-      #:stopdoc:
+      # Array of words in namespace field
       def namespaces; distinct_namespaces.map(&:namespace).compact; end
+      # Array of words in predicate field
       def predicates; distinct_predicates.map(&:predicate).compact; end
+      # Array of words in value field
       def values; distinct_values.map(&:value).compact; end
-      #:startdoc:
     end
   end
 end

@@ -31,14 +31,5 @@ module HasMachineTags
         self.tag_list
       end
     end
-    
-    module ClassMethods
-      # Updates items tagged with an old tag to use the given new tag in place of the old tag.
-      def find_and_change_tag(old_tag, new_tag)
-        results = tagged_with(old_tag)
-        results.each {|e| e.tag_add_and_remove(old_tag, new_tag)}
-        puts "Changed tag for #{results.length} records"
-      end
-    end
   end
 end

@@ -40,6 +40,10 @@ module HasMachineTags
       }.flatten
     end
 
+    def primary_namespace #:nodoc:
+      namespace_hashes.sort {|x,y| y[1].size <=> x[1].size }[0][0]
+    end
+
     def namespace_hashes #:nodoc:
       self.inject({}) {|h, e|
         namespace, *predicate_value = Tag.split_machine_tag(e)

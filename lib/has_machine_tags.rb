@@ -1,6 +1,7 @@
 require 'has_machine_tags/finder'
 require 'has_machine_tags/tag_list'
 require 'has_machine_tags/console'
+require 'has_machine_tags/version'
 
 module HasMachineTags
   def self.included(base) #:nodoc:

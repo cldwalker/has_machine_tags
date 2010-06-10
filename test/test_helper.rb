@@ -1,8 +1,7 @@
 require 'rubygems'
 require 'activerecord'
-require 'test/unit'
-require 'context' #gem install jeremymcanally-context -s http://gems.github.com
-require 'matchy' #gem install jeremymcanally-matchy -s http://gems.github.com
+require 'bacon'
+require 'has_machine_tags'
 require File.join(File.dirname(__FILE__), '..', 'init')
 
 #Setup logger
@@ -21,5 +20,7 @@ class TaggableModel < ActiveRecord::Base
   has_machine_tags
 end
 
-class Test::Unit::TestCase
+class Bacon::Context
+  def after_all; yield; end
+  def before_all; yield; end
 end

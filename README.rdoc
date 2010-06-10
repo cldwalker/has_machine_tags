@@ -13,6 +13,7 @@ machine tags ripe for modeling relationships between objects. Read the HasMachin
 documentation for a more thorough explanation.
 
 A demo app using this plugin is {here}[http://github.com/cldwalker/tag-tree].
+This gem should run on all major Ruby versions and work with Rails 2.3.x and up.
 
 == Install
 

@@ -13,6 +13,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = ">= 1.3.6"
   s.rubyforge_project = 'tagaholic'
   s.add_development_dependency 'bacon'
-  s.files = Dir.glob(%w[{lib,test,generators}/**/*.rb bin/* [A-Z]*.{txt,rdoc} ext/**/*.{rb,c}]) + %w{Rakefile gemspec init.rb}
+  s.files = Dir.glob(%w[{lib,test}/**/*.rb bin/* [A-Z]*.{txt,rdoc} ext/**/*.{rb,c}]) + %w{Rakefile gemspec}
+  s.files += Dir.glob('generators/**/*.rb') + ['init.rb']
   s.extra_rdoc_files = ["README.rdoc", "LICENSE.txt"]
 end

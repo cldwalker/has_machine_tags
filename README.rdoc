@@ -133,7 +133,7 @@ these characters are off limit unless used in the machine tag context:
 * Possible add support for other ORM's ie DataMapper.
 * Play friendly with other tagging plugins as needed.
 
-== Issues
+== Bugs/Issues
 Please report them {on github}[http://github.com/cldwalker/has_machine_tags/issues].
 
 == Credits

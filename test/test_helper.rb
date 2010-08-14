@@ -1,4 +1,3 @@
-require 'rubygems'
 require 'activerecord'
 require 'bacon'
 require 'has_machine_tags'

@@ -21,7 +21,10 @@ Install as a gem
 
     bash> gem install has_machine_tags
 
-    # add in your environment.rb
+    # with bundler: add in Gemfile
+    gem 'has_machine_tags'
+
+    # without bundler: add in config/environment.rb
     config.gem "has_machine_tags"
 
 Or as a plugin

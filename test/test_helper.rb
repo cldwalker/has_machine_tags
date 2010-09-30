@@ -1,4 +1,10 @@
-require 'activerecord'
+require 'active_record'
+begin
+  # for rip
+  require 'initializer'
+rescue LoadError
+  require 'rails'
+end
 require 'bacon'
 require 'has_machine_tags'
 require File.join(File.dirname(__FILE__), '..', 'init')

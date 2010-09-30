@@ -2,6 +2,8 @@ require 'has_machine_tags/finder'
 require 'has_machine_tags/tag_list'
 require 'has_machine_tags/console'
 require 'has_machine_tags/version'
+require 'has_machine_tags/tag'
+require 'has_machine_tags/tagging'
 
 module HasMachineTags
   def self.included(base) #:nodoc:
@@ -25,11 +27,10 @@ module HasMachineTags
         extend HasMachineTags::Finder
         include HasMachineTags::Console::InstanceMethods if options[:console]
 
-        if respond_to?(:named_scope)
-          named_scope :tagged_with, lambda{ |*args|
-            find_options_for_tagged_with(*args)
-          }
-        end
+        scope_word = Rails.version >= '3.0' ? 'scope' : 'named_scope'
+        send scope_word, :tagged_with, lambda  { |*args|
+          find_options_for_tagged_with(*args)
+        }
       end
       if options[:reverse_has_many]
         model = self.to_s
@@ -83,3 +84,5 @@ module HasMachineTags
   end
   
 end
+
+ActiveRecord::Base.send :include, HasMachineTags if defined?(ActiveRecord::Base)

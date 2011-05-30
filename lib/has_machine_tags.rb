@@ -27,7 +27,7 @@ module HasMachineTags
         extend HasMachineTags::Finder
         include HasMachineTags::Console::InstanceMethods if options[:console]
 
-        scope_word = Rails.version >= '3.0' ? 'scope' : 'named_scope'
+        scope_word = ActiveRecord::VERSION::STRING >= '3.0' ? 'scope' : 'named_scope'
         send scope_word, :tagged_with, lambda  { |*args|
           find_options_for_tagged_with(*args)
         }

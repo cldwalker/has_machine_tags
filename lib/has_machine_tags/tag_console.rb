@@ -6,7 +6,7 @@ module HasMachineTags
   #   end
   module TagConsole
     def self.included(base) #:nodoc:
-      scope = Rails.version >= '3.0' ? 'scope' : 'named_scope'
+      scope = ActiveRecord::VERSION::STRING >= '3.0' ? 'scope' : 'named_scope'
       base.class_eval %[
         self.#{scope} :namespace_counts, :select=>'*, namespace as counter, count(namespace) as count', :group=>"namespace HAVING count(namespace)>=1"
         self.#{scope} :predicate_counts, :select=>'*, predicate as counter, count(predicate) as count', :group=>"predicate HAVING count(predicate)>=1"

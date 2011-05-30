@@ -1,11 +1,8 @@
 module HasMachineTags
   class TagList < Array
-    cattr_accessor :delimiter
-    self.delimiter = ','
-    cattr_accessor :default_predicate
-    self.default_predicate = 'tags'
     QUICK_MODE_DELIMITER = ';'
   
+    attr_accessor :delimiter, :default_predicate
     # ==== Options:
     # [:quick_mode]  
     #   When true enables a quick mode for inputing multiple machine tags under the same namespace.
@@ -19,6 +16,7 @@ module HasMachineTags
     #     HasMachineTags::TagList.new("gem:name=grit;git, user:name=mojombo")
     #     => ["gem:name=grit", "gem:tags=git", "user:name=mojombo"]
     def initialize(string_or_array, options={})
+      @delimiter, @default_predicate = ',', 'tags'
       @options = options
       array = string_or_array.is_a?(Array) ? string_or_array : string_or_array.split(/\s*#{delimiter}\s*/)
       array = parse_quick_mode(array) if @options[:quick_mode]

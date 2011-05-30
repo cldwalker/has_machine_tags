@@ -16,7 +16,7 @@ module HasMachineTags
     # [:reverse_has_many] Defines a has_many :through from tags to the model using the plural of the model name.
     # [:quick_mode] When true, enables a quick mode to input machine tags with HasMachineTags::InstanceMethods.tag_list=(). See examples at HasMachineTags::TagList.new().
     def has_machine_tags(options={})
-      cattr_accessor :quick_mode
+      class << self; attr_accessor :quick_mode; end
       self.quick_mode = options[:quick_mode] || false
       self.class_eval do
         has_many :taggings, :as=>:taggable, :dependent=>:destroy
@@ -48,14 +48,14 @@ module HasMachineTags
     end
     
     def current_tag_list(list) #:nodoc:
-      TagList.new(list, :quick_mode=>self.quick_mode)
+      TagList.new(list, :quick_mode=>self.class.quick_mode)
     end
     
     # Fetches latest tag list for an object
     def tag_list
       @tag_list ||= TagList.new(self.tags.map(&:name))
     end
-    
+
     def quick_mode_tag_list
       tag_list.to_quick_mode_string
     end

@@ -19,7 +19,7 @@ This gem should run on all major Ruby versions and work with Rails 2.3.x and up.
 
 Install as a gem
 
-    bash> gem install has_machine_tags
+    $ gem install has_machine_tags
 
     # with bundler: add in Gemfile
     gem 'has_machine_tags'
@@ -29,13 +29,13 @@ Install as a gem
 
 Or as a plugin
 
-    bash> script/plugin install git://github.com/cldwalker/has_machine_tags.git
+    $ script/plugin install git://github.com/cldwalker/has_machine_tags.git
 
 
 Migrate your database from Rails root:
   
-    bash> script/generate has_machine_tags_migration
-    bash> rake db:migrate
+    $ script/generate has_machine_tags_migration
+    $ rake db:migrate
 
 == Usage
 

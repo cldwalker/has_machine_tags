@@ -1,3 +1,6 @@
+== 0.2.0
+* Remove code that depends on Rails and ActiveSupport
+
 == 0.1.8
 * Made Rails3 compatible
 

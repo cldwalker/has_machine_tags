@@ -1,12 +1,12 @@
 require File.join(File.dirname(__FILE__), 'test_helper')
 
+def create_extra_taggable
+	TaggableModel.create(:tag_list=>"blah:blih=bluh")
+end
+
 describe "Finder" do
   before { [Tag, Tagging, TaggableModel].each {|e| e.delete_all} }
-  
-  def create_extra_taggable
-    TaggableModel.create(:tag_list=>"blah:blih=bluh")
-  end
-  
+
   describe "TaggableModel" do
     describe "finds by" do
       before {

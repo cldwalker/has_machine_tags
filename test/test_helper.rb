@@ -6,6 +6,7 @@ rescue LoadError
   require 'rails'
 end
 require 'bacon'
+require 'bacon/bits'
 require 'has_machine_tags'
 require File.join(File.dirname(__FILE__), '..', 'init')
 

@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.email       = "gabriel.horner@gmail.com"
   s.homepage    = "http://tagaholic.me/has_machine_tags/"
   s.summary = "A rails tagging gem which implements flickr's machine tags and maybe more (semantic tags)."
-  s.description = "This gem implements Flickr's machine tags while still maintaining standard tagging behavior. This allows for more precise tagging as tags can have unlimited contexts provided by combinations of namespaces and predicates. These unlimited contexts also make machine tags ripe for modeling relationships between objects."
+  s.description = "This plugin implements Flickr's machine tags as explained here[http://www.flickr.com/groups/api/discuss/72157594497877875] while still maintaining standard tagging behavior.  Basically, a machine tag has a namespace, a predicate and a value in the format     [namespace]:[predicate]=[value]   This allows for more precise tagging as tags can have unlimited contexts provided by combinations of namespaces and predicates. These unlimited contexts also make machine tags ripe for modeling relationships between objects. Read the HasMachineTags::TagMethods class documentation for a more thorough explanation.  A demo app using this plugin is here. This gem should run on all major Ruby versions and work with Rails 2.3.x and up."
   s.required_rubygems_version = ">= 1.3.6"
   s.add_development_dependency 'bacon', '>= 1.1.0'
   s.add_development_dependency 'bacon-bits'

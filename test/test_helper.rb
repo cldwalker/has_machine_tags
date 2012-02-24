@@ -1,10 +1,4 @@
 require 'active_record'
-begin
-  # for rip
-  require 'initializer'
-rescue LoadError
-  require 'rails'
-end
 require 'bacon'
 require 'bacon/bits'
 require 'has_machine_tags'

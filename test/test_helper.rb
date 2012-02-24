@@ -11,8 +11,8 @@ ActiveRecord::Base.logger = Logger.new(STDERR)
 ActiveRecord::Base.logger.level = Logger::WARN
 
 #Setup db
-ActiveRecord::Base.configurations = {'sqlite3' => {:adapter => 'sqlite3', :database => ':memory:'}}
-ActiveRecord::Base.establish_connection('sqlite3')
+adapter = RUBY_DESCRIPTION[/java/] ? 'jdbcsqlite3' : 'sqlite3'
+ActiveRecord::Base.establish_connection(:adapter => adapter, :database => ':memory:')
 
 #Define schema
 require File.join(File.dirname(__FILE__), 'schema')

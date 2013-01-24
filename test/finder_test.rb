@@ -77,6 +77,19 @@ describe "Finder" do
         @taggable.save
         TaggableModel.tagged_with("square").should == [@taggable]
       end
-    end        
+    end
+
+    describe "when queried with match_all" do
+      it "finds all taggables macthing all provided tags" do
+        @taggable  = TaggableModel.create(:tag_list=>"article:tags=funny")
+        @taggable2 = TaggableModel.create(:tag_list=>"article:tags=funny, article:tags=nice")
+        @taggable3 = TaggableModel.create(:tag_list=>"article:tags=funny, article:tags=nice, article:tags=OK")
+
+        TaggableModel.tagged_with("article:tags=funny", {:match_all => true}).should == [@taggable, @taggable2, @taggable3]
+        TaggableModel.tagged_with("article:tags=funny, article:tags=nice", {:match_all => true}).should == [@taggable2, @taggable3]
+        TaggableModel.tagged_with("article:tags=funny, article:tags=nice, article:tags=OK", {:match_all => true}).should == [@taggable3]
+      end
+    end
+
   end  
 end

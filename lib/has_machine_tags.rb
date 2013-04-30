@@ -35,7 +35,7 @@ module HasMachineTags
       if options[:reverse_has_many]
         model = self.to_s
         'Tag'.constantize.class_eval do
-          has_many(model.tableize, :through => :taggings, :source => :taggable, :source_type =>model)
+          has_many(model.tableize.to_sym, :through => :taggings, :source => :taggable, :source_type =>model)
         end
       end
     end

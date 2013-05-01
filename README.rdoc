@@ -53,7 +53,7 @@ Let's create some urls with machine tags!
     url2 = Url.create(:name=>"http://github.com/giraffesoft/is_taggable",
       :tag_list=>'gem:type=tagging, gem:user=giraffesoft')
 
-    url3 = Url.create(:name=>"http://github.com/datamapper/data_mapper/tree/master",
+    url3 = Url.create(:name=>"http://github.com/datamapper/data_mapper",
       :tag_list=>'gem:type=orm')
 
     url.tag_list # => ["gem:type=tagging", "flickr"]
@@ -142,6 +142,6 @@ Please report them {on github}[http://github.com/cldwalker/has_machine_tags/issu
 == Credits
 
 Thanks goes to Flickr for popularizing this tagging model.
-Thanks also goes to the {acts-as-taggable-on plugin}[http://github.com/mbleigh/acts-as-taggable-on/tree/master]
-for their finder code and the {is_taggable plugin}[http://github.com/giraffesoft/is_taggable/tree/master]
+Thanks also goes to the {acts-as-taggable-on plugin}[http://github.com/mbleigh/acts-as-taggable-on]
+for their finder code and the {is_taggable plugin}[http://github.com/giraffesoft/is_taggable]
 for demonstrating sane testing for a Rails plugin.

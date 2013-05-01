@@ -1,3 +1,6 @@
+== 0.2.2
+* Bug fix for AR4rc1
+
 == 0.2.1
 * Add all dev dependencies
 * Add test support for jruby
